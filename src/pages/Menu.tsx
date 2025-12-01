@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -11,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MenuItemCard } from "@/components/MenuItemCard";
+import { Navigation } from "@/components/Navigation";
 import { useToast } from "@/hooks/use-toast";
 
 interface MenuItem {
@@ -120,21 +120,25 @@ const Menu = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Navigation */}
+      <Navigation />
+
       {/* Hero Section */}
-      <header className="relative bg-gradient-to-br from-primary via-primary/90 to-accent text-white py-20 px-4">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE4YzAtMy4zMTQtMi42ODYtNi02LTZzLTYgMi42ODYtNiA2IDIuNjg2IDYgNiA2IDYtMi42ODYgNi02em0wIDI0YzAtMy4zMTQtMi42ODYtNi02LTZzLTYgMi42ODYtNiA2IDIuNjg2IDYgNiA2IDYtMi42ODYgNi02eiIvPjwvZz48L2c+PC9zdmc+')] opacity-30"></div>
+      <header className="relative bg-gradient-to-br from-primary via-primary/90 to-secondary text-white py-24 px-4 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE4YzAtMy4zMTQtMi42ODYtNi02LTZzLTYgMi42ODYtNiA2IDIuNjg2IDYgNiA2IDYtMi42ODYgNi02em0wIDI0YzAtMy4zMTQtMi42ODYtNi02LTZzLTYgMi42ODYtNiA2IDIuNjg2IDYgNiA2IDYtMi42ODYgNi02eiIvPjwvZz48L2c+PC9zdmc+')] opacity-20"></div>
         <div className="container mx-auto max-w-6xl relative z-10 text-center">
-          <h1 className="text-5xl md:text-6xl font-serif font-bold mb-4 animate-fade-in">
+          <h1 className="text-5xl md:text-7xl font-serif font-bold mb-4 animate-fade-in">
             Trattoria Bella
           </h1>
-          <p className="text-xl md:text-2xl font-light opacity-90 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+          <p className="text-xl md:text-2xl font-light opacity-95 animate-fade-in" style={{ animationDelay: "0.2s" }}>
             Authentic Italian Cuisine
           </p>
+          <div className="mt-6 h-1 w-24 bg-white/40 mx-auto rounded animate-scale-in" style={{ animationDelay: "0.4s" }}></div>
         </div>
       </header>
 
       {/* Filters Section */}
-      <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b shadow-sm">
+      <div className="sticky top-16 z-40 bg-white/95 backdrop-blur-md border-b shadow-sm">
         <div className="container mx-auto max-w-6xl px-4 py-6">
           <div className="flex flex-col md:flex-row gap-4">
             {/* Search */}
@@ -144,13 +148,13 @@ const Menu = () => {
                 placeholder="Search menu..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+                className="pl-10 border-border focus:ring-2 focus:ring-primary/20 transition-all"
               />
             </div>
 
             {/* Category Filter */}
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-full md:w-[200px]">
+              <SelectTrigger className="w-full md:w-[200px] border-border">
                 <SlidersHorizontal className="h-4 w-4 mr-2" />
                 <SelectValue />
               </SelectTrigger>
@@ -165,7 +169,7 @@ const Menu = () => {
 
             {/* Sort */}
             <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-full md:w-[200px]">
+              <SelectTrigger className="w-full md:w-[200px] border-border">
                 <SelectValue placeholder="Sort by..." />
               </SelectTrigger>
               <SelectContent>
@@ -190,7 +194,7 @@ const Menu = () => {
             <p className="text-xl text-muted-foreground">No menu items found</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredItems.map((item, index) => (
               <MenuItemCard
                 key={item.id}
@@ -203,15 +207,12 @@ const Menu = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-accent text-accent-foreground py-8 mt-20">
+      <footer className="bg-secondary text-secondary-foreground py-12 mt-20">
         <div className="container mx-auto max-w-6xl px-4 text-center">
-          <p className="font-serif text-lg mb-2">Trattoria Bella</p>
-          <p className="text-sm opacity-80">Authentic Italian dining experience</p>
-          <div className="mt-4">
-            <Button variant="ghost" size="sm" asChild>
-              <a href="/auth">Admin Login</a>
-            </Button>
-          </div>
+          <p className="font-serif text-2xl mb-3">Trattoria Bella</p>
+          <p className="text-sm opacity-90 mb-4">Authentic Italian dining experience</p>
+          <div className="h-px w-32 bg-white/20 mx-auto"></div>
+          <p className="text-xs mt-4 opacity-75">© 2024 All rights reserved</p>
         </div>
       </footer>
     </div>

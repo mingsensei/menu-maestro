@@ -36,24 +36,25 @@ export const MenuItemCard = ({ item, index }: MenuItemCardProps) => {
 
   return (
     <Card 
-      className="overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in"
-      style={{ animationDelay: `${index * 0.1}s` }}
+      className="overflow-hidden hover:shadow-elegant transition-all duration-500 hover:-translate-y-2 animate-fade-in group cursor-pointer border border-border/50"
+      style={{ animationDelay: `${index * 0.08}s` }}
     >
       {/* Image */}
-      <div className="relative h-48 bg-muted overflow-hidden">
+      <div className="relative h-56 bg-muted overflow-hidden">
         {item.image_url ? (
           <img
             src={item.image_url}
             alt={item.name}
-            className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted/50">
-            <span className="text-4xl opacity-20">🍽️</span>
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted/70">
+            <span className="text-5xl opacity-30">🍽️</span>
           </div>
         )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         <Badge 
-          className={`absolute top-3 right-3 ${categoryColors[item.category] || "bg-muted"}`}
+          className={`absolute top-4 right-4 ${categoryColors[item.category] || "bg-muted"} shadow-md`}
         >
           {categoryLabels[item.category] || item.category}
         </Badge>
@@ -71,7 +72,7 @@ export const MenuItemCard = ({ item, index }: MenuItemCardProps) => {
 
       {/* Footer */}
       <CardFooter className="px-6 pb-6 pt-0">
-        <div className="flex items-baseline gap-1">
+        <div className="flex items-baseline gap-1 group-hover:scale-105 transition-transform duration-300">
           <span className="text-3xl font-serif font-bold text-primary">
             €{item.price.toFixed(2)}
           </span>

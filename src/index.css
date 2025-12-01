@@ -8,48 +8,49 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Italian Restaurant Theme - Warm & Elegant */
-    --background: 42 47% 97%;
-    --foreground: 24 45% 15%;
+    /* Italian Restaurant Theme - Brown, Red, White */
+    --background: 0 0% 100%;
+    --foreground: 25 40% 20%;
 
     --card: 0 0% 100%;
-    --card-foreground: 24 45% 15%;
+    --card-foreground: 25 40% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 24 45% 15%;
+    --popover-foreground: 25 40% 20%;
 
-    /* Terracotta primary color */
-    --primary: 12 71% 65%;
+    /* Rich red primary color */
+    --primary: 0 65% 48%;
     --primary-foreground: 0 0% 100%;
 
-    /* Warm cream secondary */
-    --secondary: 43 44% 93%;
-    --secondary-foreground: 24 45% 15%;
+    /* Warm brown secondary */
+    --secondary: 25 35% 35%;
+    --secondary-foreground: 0 0% 100%;
 
-    /* Olive green muted */
-    --muted: 152 26% 76%;
-    --muted-foreground: 24 30% 40%;
+    /* Light cream muted */
+    --muted: 30 25% 92%;
+    --muted-foreground: 25 30% 45%;
 
     /* Deep brown accent */
-    --accent: 237 26% 27%;
+    --accent: 25 50% 30%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 43 30% 88%;
-    --input: 43 30% 88%;
-    --ring: 12 71% 65%;
+    --border: 30 15% 88%;
+    --input: 30 15% 88%;
+    --ring: 0 65% 48%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
     /* Custom gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(12 71% 65%), hsl(12 71% 75%));
-    --gradient-overlay: linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.1));
+    --gradient-hero: linear-gradient(135deg, hsl(0 65% 48%), hsl(25 50% 30%));
+    --gradient-overlay: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0.1));
     
     /* Shadows */
-    --shadow-elegant: 0 10px 40px -10px hsl(12 71% 65% / 0.2);
-    --shadow-card: 0 4px 20px -2px hsl(24 45% 15% / 0.08);
+    --shadow-elegant: 0 10px 40px -10px hsl(0 65% 48% / 0.3);
+    --shadow-card: 0 4px 20px -2px hsl(25 40% 20% / 0.08);
+    --shadow-hover: 0 20px 60px -15px hsl(0 65% 48% / 0.35);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 24 45% 15%;
@@ -62,33 +63,33 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 24 45% 12%;
-    --foreground: 42 47% 95%;
+    --background: 25 40% 12%;
+    --foreground: 30 25% 95%;
 
-    --card: 24 40% 16%;
-    --card-foreground: 42 47% 95%;
+    --card: 25 35% 16%;
+    --card-foreground: 30 25% 95%;
 
-    --popover: 24 40% 16%;
-    --popover-foreground: 42 47% 95%;
+    --popover: 25 35% 16%;
+    --popover-foreground: 30 25% 95%;
 
-    --primary: 12 71% 65%;
+    --primary: 0 70% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 24 35% 20%;
-    --secondary-foreground: 42 47% 95%;
+    --secondary: 25 40% 25%;
+    --secondary-foreground: 30 25% 95%;
 
-    --muted: 24 30% 25%;
-    --muted-foreground: 43 20% 70%;
+    --muted: 25 30% 22%;
+    --muted-foreground: 30 20% 70%;
 
-    --accent: 237 26% 27%;
-    --accent-foreground: 42 47% 95%;
+    --accent: 25 50% 30%;
+    --accent-foreground: 30 25% 95%;
 
     --destructive: 0 62.8% 50%;
-    --destructive-foreground: 42 47% 95%;
+    --destructive-foreground: 30 25% 95%;
 
-    --border: 24 30% 25%;
-    --input: 24 30% 25%;
-    --ring: 12 71% 65%;
+    --border: 25 30% 25%;
+    --input: 25 30% 25%;
+    --ring: 0 70% 55%;
     
     --sidebar-background: 24 40% 14%;
     --sidebar-foreground: 42 47% 90%;
@@ -123,17 +124,47 @@ All colors MUST be HSL.
   }
 
   .animate-fade-in {
-    animation: fadeIn 0.6s ease-in;
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  .animate-slide-down {
+    animation: slideDown 0.4s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-out;
   }
 
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(20px);
     }
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 

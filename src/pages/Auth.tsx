@@ -75,7 +75,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-muted flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-secondary/5 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8 animate-fade-in">
@@ -89,7 +89,7 @@ const Auth = () => {
         </div>
 
         {/* Auth Card */}
-        <Card className="animate-fade-in shadow-elegant" style={{ animationDelay: "0.2s" }}>
+        <Card className="animate-fade-in shadow-elegant border border-border/50" style={{ animationDelay: "0.2s" }}>
           <CardHeader>
             <CardTitle className="font-serif">
               {isLogin ? "Sign In" : "Create Account"}
@@ -131,7 +131,7 @@ const Auth = () => {
 
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full shadow-md hover:shadow-lg transition-all"
                 disabled={loading}
               >
                 {loading ? (
