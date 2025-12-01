@@ -1,0 +1,266 @@
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2, Upload, X } from "lucide-react";
+
+interface AdminMenuFormProps {
+  editingItem?: any;
+  onClose: () => void;
+}
+
+export const AdminMenuForm = ({ editingItem, onClose }: AdminMenuFormProps) => {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (editingItem) {
+      setName(editingItem.name);
+      setDescription(editingItem.description);
+      setPrice(editingItem.price.toString());
+      setCategory(editingItem.category);
+      setImagePreview(editingItem.image_url);
+    }
+  }, [editingItem]);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const uploadImage = async (): Promise<string | null> => {
+    if (!imageFile) return editingItem?.image_url || null;
+
+    try {
+      const fileExt = imageFile.name.split(".").pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("menu-images")
+        .upload(filePath, imageFile);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from("menu-images")
+        .getPublicUrl(filePath);
+
+      return data.publicUrl;
+    } catch (error) {
+      console.error("Image upload error:", error);
+      toast({
+        title: "Warning",
+        description: "Image upload failed, but item will be saved without image",
+        variant: "destructive",
+      });
+      return null;
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const imageUrl = await uploadImage();
+      const itemData = {
+        name,
+        description,
+        price: parseFloat(price),
+        category: category as "appetizer" | "beverage" | "dessert" | "main_course" | "pasta" | "pizza" | "wine",
+        image_url: imageUrl,
+      };
+
+      if (editingItem) {
+        const { error } = await supabase
+          .from("menu_items")
+          .update(itemData)
+          .eq("id", editingItem.id);
+
+        if (error) throw error;
+
+        toast({
+          title: "Success",
+          description: "Menu item updated successfully",
+        });
+      } else {
+        const { error } = await supabase
+          .from("menu_items")
+          .insert([itemData]);
+
+        if (error) throw error;
+
+        toast({
+          title: "Success",
+          description: "Menu item created successfully",
+        });
+      }
+
+      onClose();
+      window.location.reload(); // Refresh to show updated list
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to save menu item",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle className="font-serif">
+            {editingItem ? "Edit Menu Item" : "Add New Menu Item"}
+          </CardTitle>
+          <Button variant="ghost" size="sm" onClick={onClose}>
+            <X className="w-4 h-4" />
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Image Upload */}
+          <div className="space-y-2">
+            <Label>Image</Label>
+            <div className="flex flex-col gap-4">
+              {imagePreview && (
+                <div className="relative w-full h-48 rounded-lg overflow-hidden bg-muted">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <div className="flex gap-2">
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                  id="image-upload"
+                />
+                <Label
+                  htmlFor="image-upload"
+                  className="flex-1 cursor-pointer"
+                >
+                  <div className="flex items-center justify-center gap-2 border-2 border-dashed rounded-lg p-4 hover:border-primary transition-colors">
+                    <Upload className="w-5 h-5" />
+                    <span>
+                      {imageFile ? imageFile.name : "Upload Image"}
+                    </span>
+                  </div>
+                </Label>
+              </div>
+            </div>
+          </div>
+
+          {/* Name */}
+          <div className="space-y-2">
+            <Label htmlFor="name">Name *</Label>
+            <Input
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Margherita Pizza"
+              required
+            />
+          </div>
+
+          {/* Description */}
+          <div className="space-y-2">
+            <Label htmlFor="description">Description *</Label>
+            <Textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Fresh mozzarella, tomato sauce, and basil"
+              rows={3}
+              required
+            />
+          </div>
+
+          {/* Price */}
+          <div className="space-y-2">
+            <Label htmlFor="price">Price (€) *</Label>
+            <Input
+              id="price"
+              type="number"
+              step="0.01"
+              min="0"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="12.50"
+              required
+            />
+          </div>
+
+          {/* Category */}
+          <div className="space-y-2">
+            <Label htmlFor="category">Category *</Label>
+            <Select value={category} onValueChange={setCategory} required>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="appetizer">Appetizer</SelectItem>
+                <SelectItem value="main_course">Main Course</SelectItem>
+                <SelectItem value="pasta">Pasta</SelectItem>
+                <SelectItem value="pizza">Pizza</SelectItem>
+                <SelectItem value="dessert">Dessert</SelectItem>
+                <SelectItem value="beverage">Beverage</SelectItem>
+                <SelectItem value="wine">Wine</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Actions */}
+          <div className="flex gap-3 pt-4">
+            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+              Cancel
+            </Button>
+            <Button type="submit" disabled={loading} className="flex-1">
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>{editingItem ? "Update Item" : "Create Item"}</>
+              )}
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
+  );
+};
