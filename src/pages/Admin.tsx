@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, Plus, TrendingUp } from "lucide-react";
+import { LogOut, Plus, TrendingUp, FolderOpen } from "lucide-react";
 import { AdminMenuList } from "@/components/admin/AdminMenuList";
 import { AdminMenuForm } from "@/components/admin/AdminMenuForm";
 import { AdminAnalytics } from "@/components/admin/AdminAnalytics";
+import { AdminCategoryList } from "@/components/admin/AdminCategoryList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Admin = () => {
@@ -118,8 +119,12 @@ const Admin = () => {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <Tabs defaultValue="menu" className="space-y-6">
-          <TabsList className="grid w-full md:w-[400px] grid-cols-2">
+          <TabsList className="grid w-full md:w-[600px] grid-cols-3">
             <TabsTrigger value="menu">Menu Items</TabsTrigger>
+            <TabsTrigger value="categories">
+              <FolderOpen className="w-4 h-4 mr-2" />
+              Categories
+            </TabsTrigger>
             <TabsTrigger value="analytics">
               <TrendingUp className="w-4 h-4 mr-2" />
               Analytics
@@ -144,6 +149,10 @@ const Admin = () => {
                 onClose={handleFormClose}
               />
             )}
+          </TabsContent>
+
+          <TabsContent value="categories">
+            <AdminCategoryList />
           </TabsContent>
 
           <TabsContent value="analytics">
