@@ -20,11 +20,12 @@ export const MenuItemDetailModal = ({ item, onClose }: MenuItemDetailModalProps)
 
   return (
     <div 
-      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm animate-fade-in flex items-start justify-center pt-20 md:pt-24"
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm animate-fade-in flex flex-col items-center justify-start pt-16 md:pt-20 pb-8 px-4"
       onClick={onClose}
     >
+      {/* Modal Card */}
       <div 
-        className="relative w-[calc(100%-2rem)] max-w-lg bg-card rounded-2xl shadow-2xl animate-slide-up overflow-hidden"
+        className="w-full max-w-lg bg-card rounded-2xl shadow-2xl animate-slide-up overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
@@ -54,7 +55,7 @@ export const MenuItemDetailModal = ({ item, onClose }: MenuItemDetailModalProps)
         </div>
 
         {/* Content */}
-        <div className="p-6 pb-10">
+        <div className="p-6">
           <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-4">
             {item.name}
           </h2>
@@ -63,18 +64,17 @@ export const MenuItemDetailModal = ({ item, onClose }: MenuItemDetailModalProps)
             {item.description}
           </p>
         </div>
-
-        {/* Back to Menu Button - Outside bottom center */}
-        <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
-          <Button
-            onClick={onClose}
-            className="gap-2 rounded-full px-6 shadow-lg"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Menu
-          </Button>
-        </div>
       </div>
+
+      {/* Back to Menu Button - Separate from modal */}
+      <Button
+        onClick={onClose}
+        className="mt-6 gap-2 rounded-full px-6 shadow-lg animate-fade-in"
+        style={{ animationDelay: "0.15s" }}
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Menu
+      </Button>
     </div>
   );
 };
