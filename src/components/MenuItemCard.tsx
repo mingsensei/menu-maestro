@@ -66,7 +66,7 @@ export const MenuItemCard = ({ item, index }: MenuItemCardProps) => {
           {item.name}
         </h3>
         <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
-          {item.description}
+          <div>{item.price.toLocaleString('vi-VN')} ₫</div>
         </p>
       </CardContent>
     </Card>

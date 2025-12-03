@@ -17,22 +17,7 @@ import { Navigation } from "@/components/Navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import ItalyBg from "@/assets/italy-bg.jpg";
-interface MenuItem {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  image_url: string | null;
-}
-
-interface Category {
-  id: string;
-  name: string;
-  display_name: string;
-  display_order: number;
-  is_active: boolean;
-}
+import {Category,MenuItem} from "@/type/type.ts"
 
 const Menu = () => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);

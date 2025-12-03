@@ -9,6 +9,7 @@ import { AdminMenuForm } from "@/components/admin/AdminMenuForm";
 import { AdminAnalytics } from "@/components/admin/AdminAnalytics";
 import { AdminCategoryList } from "@/components/admin/AdminCategoryList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {Category} from "@/type/type.ts";
 
 const Admin = () => {
   const [loading, setLoading] = useState(true);
@@ -17,9 +18,11 @@ const Admin = () => {
   const [editingItem, setEditingItem] = useState<any>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
     checkAuth();
+    fetchData();
   }, []);
 
   const checkAuth = async () => {
@@ -57,6 +60,26 @@ const Admin = () => {
       setLoading(false);
     }
   };
+  const fetchData = async () => {
+    try {
+      const categoryResult = await supabase
+          .from("categories")
+          .select("*")
+          .eq("is_active", true)
+          .order("display_order");
+
+      if (categoryResult.error) throw categoryResult.error;
+
+      setCategories(categoryResult.data || []);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to load categories",
+        variant: "destructive",
+      });
+    }
+  };
+
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -147,6 +170,7 @@ const Admin = () => {
               <AdminMenuForm
                 editingItem={editingItem}
                 onClose={handleFormClose}
+              categories={categories}
               />
             )}
           </TabsContent>
