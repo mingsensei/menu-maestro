@@ -64,9 +64,9 @@ const Auth = () => {
             <ChefHat className="w-8 h-8 text-primary-foreground" />
           </div>
           <h1 className="text-3xl font-serif font-bold text-foreground mb-2">
-            Trattoria Bella
+            Riverside Terrace
           </h1>
-          <p className="text-muted-foreground">Admin Portal</p>
+          <p className="text-muted-foreground">Welcome back, Admin</p>
         </div>
 
         {/* Auth Card */}
