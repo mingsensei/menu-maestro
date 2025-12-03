@@ -4,7 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { User, LogOut, ChefHat } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
 export const Navigation = () => {
   const [user, setUser] = useState<any>(null);
   const navigate = useNavigate();
@@ -38,17 +37,23 @@ export const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <button 
-            onClick={() => navigate("/")}
-            className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
+          <button
+              onClick={() => navigate("/")}
+              className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
           >
-            <div className="flex items-center justify-center w-10 h-10 bg-primary rounded-full">
-              <ChefHat className="w-5 h-5 text-primary-foreground" />
+            <div className="w-10 h-10 rounded-full overflow-hidden">
+              <img
+                  src="/src/assets/restaurant.png"
+                  alt="Restaurant"
+                  className="w-full h-full object-cover"
+              />
             </div>
+
             <span className="font-serif text-xl font-bold hidden sm:inline">
-              Riverside Terrace
-            </span>
+    Riverside Terrace Restaurant
+  </span>
           </button>
+
 
           {/* Auth Section */}
           <div className="flex items-center gap-3">

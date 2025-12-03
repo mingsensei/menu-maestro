@@ -16,7 +16,7 @@ import { MenuItemDetailModal } from "@/components/MenuItemDetailModal";
 import { Navigation } from "@/components/Navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
-
+import ItalyBg from "@/assets/italy-bg.jpg";
 interface MenuItem {
   id: string;
   name: string;
@@ -126,19 +126,36 @@ const Menu = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      {/* Hero Section */}
-      <header className="relative bg-gradient-to-br from-primary via-primary/90 to-secondary text-white py-16 md:py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE4YzAtMy4zMTQtMi42ODYtNi02LTZzLTYgMi42ODYtNiA2IDIuNjg2IDYgNiA2IDYtMi42ODYgNi02em0wIDI0YzAtMy4zMTQtMi42ODYtNi02LTZzLTYgMi42ODYtNiA2IDIuNjg2IDYgNiA2IDYtMi42ODYgNi02eiIvPjwvZz48L2c+PC9zdmc+')] opacity-20"></div>
+
+
+      <header
+          className="
+    relative text-white py-16 md:py-24 px-4
+    bg-[radial-gradient(circle_at_center,rgba(255,180,180,0.7),rgba(180,40,40,0.85))]
+    backdrop-brightness-95
+  "
+      >
+
+
+      {/* Overlay */}
+        <div className="absolute inset-0 bg-black/40 backdrop-brightness-90"></div>
+
+        {/* Content */}
         <div className="container mx-auto max-w-6xl relative z-10 text-center">
-          <h1 className="text-4xl md:text-7xl font-serif font-bold mb-2 md:mb-4 animate-fade-in">
-            Riverside Terrace
+          <h1 className="text-4xl md:text-7xl font-serif font-bold mb-2 md:mb-4 drop-shadow-lg">
+            Riverside Terrace Restaurant
           </h1>
-          <p className="text-lg md:text-2xl font-light opacity-95 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+
+          <p
+              className="text-lg md:text-2xl font-light opacity-95 drop-shadow-md"
+          >
             Fresh flavors, beautiful views
           </p>
-          <div className="mt-4 md:mt-6 h-1 w-24 bg-white/40 mx-auto rounded animate-scale-in" style={{ animationDelay: "0.4s" }}></div>
+
+          <div className="mt-4 md:mt-6 h-1 w-24 bg-white/60 mx-auto rounded"></div>
         </div>
       </header>
+
 
       {/* Filters Section */}
       <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-md border-b shadow-sm">
@@ -216,14 +233,19 @@ const Menu = () => {
       />
 
       {/* Footer */}
-      <footer className="bg-secondary text-secondary-foreground py-12 mt-12">
-        <div className="container mx-auto max-w-6xl px-4 text-center">
-          <p className="font-serif text-2xl mb-3">Riverside Terrace</p>
+      <footer className="relative bg-red-700 text-white py-12 mt-12">
+        {/* Overlay làm mờ màu đỏ */}
+        <div className="absolute inset-0 bg-red-700 opacity-60 pointer-events-none"></div>
+
+        <div className="relative z-10 container mx-auto max-w-6xl px-4 text-center">
+          <p className="font-serif text-2xl mb-3">Riverside Terrace Restaurant</p>
           <p className="text-sm opacity-90 mb-4">Where great food meets great views</p>
-          <div className="h-px w-32 bg-white/20 mx-auto"></div>
+          <div className="h-px w-32 bg-white/30 mx-auto"></div>
           <p className="text-xs mt-4 opacity-75">© 2024 All rights reserved</p>
         </div>
       </footer>
+
+
     </div>
   );
 };
