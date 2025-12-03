@@ -12,7 +12,6 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -33,36 +32,18 @@ const Auth = () => {
     setLoading(true);
 
     try {
-      if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-        if (error) throw error;
+      if (error) throw error;
 
-        toast({
-          title: "Welcome back!",
-          description: "You've successfully logged in.",
-        });
-        navigate("/admin");
-      } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/admin`,
-          },
-        });
-
-        if (error) throw error;
-
-        toast({
-          title: "Account created!",
-          description: "You've successfully signed up. You can now log in.",
-        });
-        setIsLogin(true);
-      }
+      toast({
+        title: "Welcome back!",
+        description: "You've successfully logged in.",
+      });
+      navigate("/admin");
     } catch (error: any) {
       toast({
         title: "Error",
@@ -91,13 +72,9 @@ const Auth = () => {
         {/* Auth Card */}
         <Card className="animate-fade-in shadow-elegant border border-border/50" style={{ animationDelay: "0.2s" }}>
           <CardHeader>
-            <CardTitle className="font-serif">
-              {isLogin ? "Sign In" : "Create Account"}
-            </CardTitle>
+            <CardTitle className="font-serif">Sign In</CardTitle>
             <CardDescription>
-              {isLogin
-                ? "Enter your credentials to access the admin dashboard"
-                : "Create a new admin account"}
+              Enter your credentials to access the admin dashboard
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -140,22 +117,9 @@ const Auth = () => {
                     Please wait...
                   </>
                 ) : (
-                  <>{isLogin ? "Sign In" : "Sign Up"}</>
+                  "Sign In"
                 )}
               </Button>
-
-              <div className="text-center text-sm">
-                <button
-                  type="button"
-                  onClick={() => setIsLogin(!isLogin)}
-                  className="text-primary hover:underline"
-                  disabled={loading}
-                >
-                  {isLogin
-                    ? "Need an account? Sign up"
-                    : "Already have an account? Sign in"}
-                </button>
-              </div>
             </form>
 
             <div className="mt-6 pt-6 border-t text-center">
