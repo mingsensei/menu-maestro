@@ -97,10 +97,10 @@ const Admin = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-serif font-bold text-foreground">
-                Admin Dashboard
+                Dashboard
               </h1>
               <p className="text-sm text-muted-foreground">
-                Manage your restaurant menu
+                Keep your menu fresh and delicious
               </p>
             </div>
             <div className="flex items-center gap-3">

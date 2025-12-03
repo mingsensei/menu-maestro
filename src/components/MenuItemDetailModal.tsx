@@ -20,11 +20,11 @@ export const MenuItemDetailModal = ({ item, onClose }: MenuItemDetailModalProps)
 
   return (
     <div 
-      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm animate-fade-in flex items-start md:items-center justify-center pt-16 md:pt-0"
       onClick={onClose}
     >
       <div 
-        className="fixed inset-x-4 bottom-0 top-auto md:inset-auto md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-lg md:w-full bg-card rounded-t-3xl md:rounded-2xl shadow-2xl animate-slide-up overflow-hidden max-h-[85vh]"
+        className="w-[calc(100%-2rem)] max-w-lg bg-card rounded-2xl shadow-2xl animate-slide-up overflow-hidden max-h-[80vh] md:-mt-16"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}

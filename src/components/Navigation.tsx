@@ -46,7 +46,7 @@ export const Navigation = () => {
               <ChefHat className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="font-serif text-xl font-bold hidden sm:inline">
-              Trattoria Bella
+              Riverside Terrace
             </span>
           </button>
 
