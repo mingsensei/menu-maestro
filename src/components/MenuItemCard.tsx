@@ -1,4 +1,4 @@
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 interface MenuItemCardProps {
@@ -69,15 +69,6 @@ export const MenuItemCard = ({ item, index }: MenuItemCardProps) => {
           {item.description}
         </p>
       </CardContent>
-
-      {/* Footer */}
-      <CardFooter className="px-6 pb-6 pt-0">
-        <div className="flex items-baseline gap-1 group-hover:scale-105 transition-transform duration-300">
-          <span className="text-3xl font-serif font-bold text-primary">
-            €{item.price.toFixed(2)}
-          </span>
-        </div>
-      </CardFooter>
     </Card>
   );
 };
