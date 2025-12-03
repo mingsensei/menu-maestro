@@ -20,11 +20,11 @@ export const MenuItemDetailModal = ({ item, onClose }: MenuItemDetailModalProps)
 
   return (
     <div 
-      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm animate-fade-in flex items-start md:items-center justify-center pt-16 md:pt-0"
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm animate-fade-in flex items-start justify-center pt-20 md:pt-24"
       onClick={onClose}
     >
       <div 
-        className="w-[calc(100%-2rem)] max-w-lg bg-card rounded-2xl shadow-2xl animate-slide-up overflow-hidden max-h-[80vh] md:-mt-16"
+        className="relative w-[calc(100%-2rem)] max-w-lg bg-card rounded-2xl shadow-2xl animate-slide-up overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
@@ -38,7 +38,7 @@ export const MenuItemDetailModal = ({ item, onClose }: MenuItemDetailModalProps)
         </Button>
 
         {/* Image */}
-        <div className="relative h-56 md:h-64 bg-muted">
+        <div className="relative h-48 md:h-56 bg-muted">
           {item.image_url ? (
             <img
               src={item.image_url}
@@ -54,29 +54,25 @@ export const MenuItemDetailModal = ({ item, onClose }: MenuItemDetailModalProps)
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(85vh-14rem)]">
-          <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-3">
+        <div className="p-6 pb-10">
+          <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-4">
             {item.name}
           </h2>
           
-          <p className="text-muted-foreground leading-relaxed mb-6">
+          <p className="text-muted-foreground leading-relaxed">
             {item.description}
           </p>
+        </div>
 
-          <div className="flex items-center justify-between pt-4 border-t border-border">
-            <span className="text-3xl font-serif font-bold text-primary">
-              €{item.price.toFixed(2)}
-            </span>
-            
-            <Button
-              variant="outline"
-              onClick={onClose}
-              className="gap-2"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Menu
-            </Button>
-          </div>
+        {/* Back to Menu Button - Outside bottom center */}
+        <div className="absolute -bottom-5 left-1/2 -translate-x-1/2">
+          <Button
+            onClick={onClose}
+            className="gap-2 rounded-full px-6 shadow-lg"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Menu
+          </Button>
         </div>
       </div>
     </div>

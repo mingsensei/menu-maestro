@@ -38,11 +38,6 @@ export const MobileMenuItemCard = ({ item, onClick }: MobileMenuItemCardProps) =
       <h3 className="font-serif text-sm font-semibold text-foreground mt-2 line-clamp-2 text-center px-1">
         {item.name}
       </h3>
-      
-      {/* Price */}
-      <p className="text-primary font-bold text-sm text-center mt-1">
-        €{item.price.toFixed(2)}
-      </p>
     </div>
   );
 };
