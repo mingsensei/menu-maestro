@@ -59,7 +59,6 @@ export const Navigation = () => {
 
 {/*          </button>*/}
 
-
           {/* Auth Section */}
           <div className="flex items-center gap-3">
             {user ? (
@@ -74,7 +73,7 @@ export const Navigation = () => {
                   onClick={() => navigate("/admin")}
                   className="hidden sm:inline-flex"
                 >
-                  Dashboard
+                  Dashboard dd
                 </Button>
                 <Button
                   variant="outline"
