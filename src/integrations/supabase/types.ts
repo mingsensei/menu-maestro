@@ -46,9 +46,15 @@ export type Database = {
       }
       menu_items: {
         Row: {
-          category: Database["public"]["Enums"]["menu_category"]
+          category_id: string | null
           created_at: string
           description: string
+          description_cn: string | null
+          description_ja: string | null
+          description_ko: string | null
+          description_kz: string | null
+          description_ru: string | null
+          description_vi: string | null
           id: string
           image_url: string | null
           name: string
@@ -56,9 +62,15 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          category: Database["public"]["Enums"]["menu_category"]
+          category_id?: string | null
           created_at?: string
           description: string
+          description_cn?: string | null
+          description_ja?: string | null
+          description_ko?: string | null
+          description_kz?: string | null
+          description_ru?: string | null
+          description_vi?: string | null
           id?: string
           image_url?: string | null
           name: string
@@ -66,16 +78,30 @@ export type Database = {
           updated_at?: string
         }
         Update: {
-          category?: Database["public"]["Enums"]["menu_category"]
+          category_id?: string | null
           created_at?: string
           description?: string
+          description_cn?: string | null
+          description_ja?: string | null
+          description_ko?: string | null
+          description_kz?: string | null
+          description_ru?: string | null
+          description_vi?: string | null
           id?: string
           image_url?: string | null
           name?: string
           price?: number
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "menu_items_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       page_views: {
         Row: {
@@ -137,23 +163,6 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
-      menu_category:
-        | "appetizer"
-        | "main_course"
-        | "pasta"
-        | "pizza"
-        | "dessert"
-        | "beverage"
-        | "wine"
-        | "calzone"
-        | "gnocchi"
-        | "special"
-        | "cocktail"
-        | "mocktail"
-        | "soft_drink"
-        | "spirit"
-        | "starter"
-        | "coffee"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -282,24 +291,6 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
-      menu_category: [
-        "appetizer",
-        "main_course",
-        "pasta",
-        "pizza",
-        "dessert",
-        "beverage",
-        "wine",
-        "calzone",
-        "gnocchi",
-        "special",
-        "cocktail",
-        "mocktail",
-        "soft_drink",
-        "spirit",
-        "starter",
-        "coffee",
-      ],
     },
   },
 } as const
