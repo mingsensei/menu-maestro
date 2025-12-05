@@ -63,7 +63,7 @@ const Auth = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-full mb-4">
             <ChefHat className="w-8 h-8 text-primary-foreground" />
           </div>
-          <h1 className="text-3xl font-serif font-bold text-foreground mb-2">
+          <h1 className="text-3xl font-sans font-semibold text-foreground mb-2">
             Riverside Terrace
           </h1>
           <p className="text-muted-foreground">Welcome back, Admin</p>
@@ -72,7 +72,7 @@ const Auth = () => {
         {/* Auth Card */}
         <Card className="animate-fade-in shadow-elegant border border-border/50" style={{ animationDelay: "0.2s" }}>
           <CardHeader>
-            <CardTitle className="font-serif">Sign In</CardTitle>
+            <CardTitle className="font-sans">Sign In</CardTitle>
             <CardDescription>
               Enter your credentials to access the admin dashboard
             </CardDescription>

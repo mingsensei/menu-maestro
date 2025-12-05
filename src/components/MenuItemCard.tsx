@@ -48,7 +48,7 @@ export const MenuItemCard = ({ item, index }: MenuItemCardProps) => {
       {/* Content */}
       <CardContent className="p-4">
         <div className="flex justify-between items-start mb-2">
-          <h3 className="font-serif font-bold text-lg text-foreground">{item.name}</h3>
+          <h3 className="font-sans font-semibold text-lg text-foreground">{item.name}</h3>
           <span className="text-primary font-bold whitespace-nowrap ml-2">
             {item.price.toLocaleString('vi-VN')} ₫
           </span>

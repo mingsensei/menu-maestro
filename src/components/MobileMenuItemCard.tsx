@@ -43,7 +43,7 @@ export const MobileMenuItemCard = ({ item, onClick }: MobileMenuItemCardProps) =
         )}
       </div>
       <CardContent className="p-3">
-        <h3 className="font-serif font-bold text-sm text-foreground truncate">{item.name}</h3>
+        <h3 className="font-sans font-semibold text-sm text-foreground truncate">{item.name}</h3>
         <span className="text-primary font-bold text-sm">
           {item.price.toLocaleString('vi-VN')} ₫
         </span>

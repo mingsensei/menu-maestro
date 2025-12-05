@@ -119,7 +119,7 @@ const Admin = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-serif font-bold text-foreground">
+              <h1 className="text-2xl font-sans font-semibold text-foreground">
                 Dashboard
               </h1>
               <p className="text-sm text-muted-foreground">
@@ -158,7 +158,7 @@ const Admin = () => {
             {!showForm ? (
               <>
                 <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-serif font-bold">Menu Items</h2>
+                  <h2 className="text-xl font-sans font-semibold">Menu Items</h2>
                   <Button onClick={() => setShowForm(true)}>
                     <Plus className="w-4 h-4 mr-2" />
                     Add Item

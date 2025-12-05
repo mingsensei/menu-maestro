@@ -176,7 +176,7 @@ export const AdminCategoryList = () => {
     <>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-serif font-bold">Categories</h2>
+          <h2 className="text-xl font-sans font-semibold">Categories</h2>
           {!showForm && (
             <Button onClick={() => setShowForm(true)}>
               <Plus className="w-4 h-4 mr-2" />

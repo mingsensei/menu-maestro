@@ -288,7 +288,7 @@ const Menu = () => {
       <footer className="relative bg-white text-black py-12 mt-12">
         <div className="absolute inset-0 bg-white opacity-50 pointer-events-none"></div>
         <div className="relative z-10 container mx-auto max-w-6xl px-4 text-center">
-          <p className="font-serif text-2xl mb-3">
+          <p className="font-sans text-2xl font-semibold mb-3">
             <span className="text-green-700">Riverside Terrace</span>{" "}
             <span className="text-red-700">Restaurant</span>
           </p>

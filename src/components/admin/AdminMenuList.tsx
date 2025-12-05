@@ -124,7 +124,7 @@ export const AdminMenuList = ({ onEdit, categories }: AdminMenuListProps) => {
             </div>
             <CardContent className="p-4">
               <div className="flex justify-between items-start mb-2">
-                <h3 className="font-serif font-bold text-lg">{item.name}</h3>
+                <h3 className="font-sans font-semibold text-lg">{item.name}</h3>
                 <span className="text-primary font-bold">{item.price.toLocaleString('vi-VN')} ₫</span>
               </div>
               <p className="text-sm text-muted-foreground mb-2 line-clamp-2">

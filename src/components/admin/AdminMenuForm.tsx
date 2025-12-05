@@ -171,7 +171,7 @@ export const AdminMenuForm = ({ editingItem, onClose, categories }: AdminMenuFor
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="font-serif">
+          <CardTitle className="font-sans">
             {editingItem ? "Edit Menu Item" : "Add New Menu Item"}
           </CardTitle>
           <Button variant="ghost" size="sm" onClick={onClose}>

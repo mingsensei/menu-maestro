@@ -47,24 +47,23 @@ export const MenuItemDetailModal = ({ item, onClose }: MenuItemDetailModalProps)
         </Button>
 
         {/* Image */}
-        <div className="relative h-48 md:h-56 bg-muted">
+        <div className="relative bg-muted flex items-center justify-center">
           {item.image_url ? (
             <img
               src={item.image_url}
               alt={item.name}
-              className="w-full h-full object-cover"
+              className="w-full max-h-[60vh] object-contain"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-muted/70">
+            <div className="w-full h-48 flex items-center justify-center bg-gradient-to-br from-muted to-muted/70">
               <span className="text-7xl opacity-30">🍽️</span>
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
         </div>
 
         {/* Content */}
         <div className="p-6 pt-4">
-          <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-4">
+          <h2 className="font-sans text-2xl md:text-3xl font-semibold text-foreground mb-4">
             {item.name}
           </h2>
           

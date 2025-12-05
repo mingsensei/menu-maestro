@@ -48,7 +48,7 @@ export const AdminAnalytics = () => {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-serif font-bold">Website Analytics</h2>
+      <h2 className="text-xl font-sans font-semibold">Website Analytics</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card>
@@ -57,7 +57,7 @@ export const AdminAnalytics = () => {
             <Eye className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold font-serif text-primary">{totalViews}</div>
+            <div className="text-3xl font-semibold text-primary">{totalViews}</div>
             <p className="text-xs text-muted-foreground mt-1">
               All-time page views
             </p>
@@ -70,7 +70,7 @@ export const AdminAnalytics = () => {
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold font-serif text-primary">{todayViews}</div>
+            <div className="text-3xl font-semibold text-primary">{todayViews}</div>
             <p className="text-xs text-muted-foreground mt-1">
               Views since midnight
             </p>
@@ -83,7 +83,7 @@ export const AdminAnalytics = () => {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold font-serif text-primary">
+            <div className="text-3xl font-semibold text-primary">
               {totalViews > 0 ? ((todayViews / totalViews) * 100).toFixed(1) : 0}%
             </div>
             <p className="text-xs text-muted-foreground mt-1">
@@ -95,7 +95,7 @@ export const AdminAnalytics = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle className="font-serif">Analytics Overview</CardTitle>
+          <CardTitle className="font-sans">Analytics Overview</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">
