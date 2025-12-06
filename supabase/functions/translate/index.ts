@@ -59,6 +59,14 @@ Return exactly this JSON structure with translations:
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Gemini API error:", errorText);
+      
+      if (response.status === 429) {
+        return new Response(
+          JSON.stringify({ error: "Translation service is temporarily busy. Please try again in a few moments." }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      
       throw new Error(`Gemini API error: ${response.status}`);
     }
 

@@ -77,10 +77,14 @@ export const AutoFixAllButton = () => {
     }
   };
 
+  // Helper to add delay between API calls
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
   const handleAutoFixAll = async () => {
     setLoading(true);
     let fixedCount = 0;
     let errorCount = 0;
+    let rateLimitHit = false;
 
     try {
       // Fetch all menu items
@@ -101,7 +105,7 @@ export const AutoFixAllButton = () => {
 
       setProgress({ current: 0, total: items.length });
 
-      // Process items in batches
+      // Process items one by one with delay to avoid rate limits
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
         setProgress({ current: i + 1, total: items.length });
@@ -109,14 +113,16 @@ export const AutoFixAllButton = () => {
         const updates: Record<string, any> = {};
         let needsUpdate = false;
 
-        // Check for missing translations (es, fr, it)
-        const missingTranslations = [];
-        if (!item.description_es) missingTranslations.push('es');
-        if (!item.description_fr) missingTranslations.push('fr');
-        if (!item.description_it) missingTranslations.push('it');
+        // Check for missing translations
+        const needsTranslation = !item.description_es || !item.description_fr || !item.description_it ||
+          !item.description_ko || !item.description_ja || !item.description_cn ||
+          !item.description_vi || !item.description_ru || !item.description_kz;
 
-        if (missingTranslations.length > 0 && item.description) {
+        if (needsTranslation && item.description && !rateLimitHit) {
           try {
+            // Add delay between translation requests to avoid rate limiting
+            if (i > 0) await delay(1500);
+            
             const translations = await translateDescription(item.description);
             
             if (!item.description_es && translations.description_es) {
@@ -131,7 +137,6 @@ export const AutoFixAllButton = () => {
               updates.description_it = translations.description_it;
               needsUpdate = true;
             }
-            // Also fill in any other missing translations
             if (!item.description_ko && translations.description_ko) {
               updates.description_ko = translations.description_ko;
               needsUpdate = true;
@@ -156,8 +161,17 @@ export const AutoFixAllButton = () => {
               updates.description_kz = translations.description_kz;
               needsUpdate = true;
             }
-          } catch (translationError) {
+          } catch (translationError: any) {
             console.error(`Translation error for item ${item.id}:`, translationError);
+            // Check if it's a rate limit error
+            if (translationError.message?.includes('busy') || translationError.message?.includes('429')) {
+              rateLimitHit = true;
+              toast({
+                title: "Rate limit reached",
+                description: "Translation service is busy. Some items were skipped. Try again later.",
+                variant: "destructive",
+              });
+            }
             errorCount++;
           }
         }
