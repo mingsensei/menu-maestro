@@ -102,6 +102,9 @@ export const AdminMenuForm = ({ editingItem, onClose, categories }: AdminMenuFor
         description_vi: editingItem?.description_vi || null,
         description_ru: editingItem?.description_ru || null,
         description_kz: editingItem?.description_kz || null,
+        description_es: editingItem?.description_es || null,
+        description_fr: editingItem?.description_fr || null,
+        description_it: editingItem?.description_it || null,
       };
 
       // Only translate if it's a new item or description changed
@@ -233,7 +236,7 @@ export const AdminMenuForm = ({ editingItem, onClose, categories }: AdminMenuFor
                 required
               />
               <p className="text-xs text-muted-foreground">
-                Will be auto-translated to Korean, Japanese, Chinese, Vietnamese, Russian, and Kazakh
+                Will be auto-translated to Korean, Japanese, Chinese, Vietnamese, Russian, Kazakh, Spanish, French, and Italian
               </p>
             </div>
 

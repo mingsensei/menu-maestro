@@ -35,7 +35,7 @@ const Menu = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [sortBy, setSortBy] = useState<string>("name-asc");
+  const [sortBy, setSortBy] = useState<string>("default");
   const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const { toast } = useToast();
@@ -91,8 +91,13 @@ const Menu = () => {
       }
 
       // Apply sorting
-      const [sortField, sortDirection] = sortBy.split("-");
-      query = query.order(sortField, { ascending: sortDirection === "asc" });
+      if (sortBy !== "default") {
+        const [sortField, sortDirection] = sortBy.split("-");
+        query = query.order(sortField, { ascending: sortDirection === "asc" });
+      } else {
+        // Default: order by created_at to maintain natural database order
+        query = query.order("created_at", { ascending: true });
+      }
 
       // Apply pagination
       const from = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -197,6 +202,7 @@ const Menu = () => {
                 <SelectValue placeholder="Sort" />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="default">Default</SelectItem>
                 <SelectItem value="name-asc">A-Z</SelectItem>
                 <SelectItem value="name-desc">Z-A</SelectItem>
                 <SelectItem value="price-asc">Price ↑</SelectItem>

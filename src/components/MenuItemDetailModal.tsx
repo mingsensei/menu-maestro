@@ -16,7 +16,7 @@ export const MenuItemDetailModal = ({ item, onClose }: MenuItemDetailModalProps)
   if (!item) return null;
 
   const getDescription = () => {
-    const descriptionMap: Record<Language, string | null> = {
+    const descriptionMap: Record<Language, string | null | undefined> = {
       en: item.description,
       ko: item.description_ko,
       ja: item.description_ja,
@@ -24,6 +24,9 @@ export const MenuItemDetailModal = ({ item, onClose }: MenuItemDetailModalProps)
       vi: item.description_vi,
       ru: item.description_ru,
       kz: item.description_kz,
+      es: item.description_es,
+      fr: item.description_fr,
+      it: item.description_it,
     };
     return descriptionMap[language] || item.description;
   };

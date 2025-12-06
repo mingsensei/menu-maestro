@@ -7,6 +7,9 @@ export interface Translations {
   description_vi: string;
   description_ru: string;
   description_kz: string;
+  description_es: string;
+  description_fr: string;
+  description_it: string;
 }
 
 export const useTranslation = () => {

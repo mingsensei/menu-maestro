@@ -50,6 +50,9 @@ export type Database = {
           created_at: string
           description: string
           description_cn: string | null
+          description_es: string | null
+          description_fr: string | null
+          description_it: string | null
           description_ja: string | null
           description_ko: string | null
           description_kz: string | null
@@ -66,6 +69,9 @@ export type Database = {
           created_at?: string
           description: string
           description_cn?: string | null
+          description_es?: string | null
+          description_fr?: string | null
+          description_it?: string | null
           description_ja?: string | null
           description_ko?: string | null
           description_kz?: string | null
@@ -82,6 +88,9 @@ export type Database = {
           created_at?: string
           description?: string
           description_cn?: string | null
+          description_es?: string | null
+          description_fr?: string | null
+          description_it?: string | null
           description_ja?: string | null
           description_ko?: string | null
           description_kz?: string | null

@@ -16,6 +16,9 @@ const languageFlags: Record<Language, string> = {
     vi: "🇻🇳",
     ru: "🇷🇺",
     kz: "🇰🇿",
+    es: "🇪🇸",
+    fr: "🇫🇷",
+    it: "🇮🇹",
 };
 
 export const LanguageSelector = () => {
