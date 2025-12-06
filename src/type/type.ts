@@ -8,6 +8,9 @@ export interface MenuItem {
     description_vi: string | null;
     description_ru: string | null;
     description_kz: string | null;
+    description_es: string | null;
+    description_fr: string | null;
+    description_it: string | null;
     price: number;
     category_id: string | null;
     image_url: string | null;

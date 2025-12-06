@@ -33,7 +33,10 @@ Return exactly this JSON structure with translations:
   "description_cn": "Chinese (Simplified) translation here",
   "description_vi": "Vietnamese translation here",
   "description_ru": "Russian translation here",
-  "description_kz": "Kazakh translation here"
+  "description_kz": "Kazakh translation here",
+  "description_es": "Spanish translation here",
+  "description_fr": "French translation here",
+  "description_it": "Italian translation here"
 }`;
 
     const response = await fetch(

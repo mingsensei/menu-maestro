@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
-export type Language = "en" | "ko" | "ja" | "cn" | "vi" | "ru" | "kz";
+export type Language = "en" | "ko" | "ja" | "cn" | "vi" | "ru" | "kz" | "es" | "fr" | "it";
 
 interface LanguageContextType {
   language: Language;
@@ -16,6 +16,9 @@ const languageLabels: Record<Language, string> = {
   vi: "Tiếng Việt",
   ru: "Русский",
   kz: "Қазақша",
+  es: "Español",
+  fr: "Français",
+  it: "Italiano",
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);

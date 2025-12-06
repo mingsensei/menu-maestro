@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { LogOut, Plus, TrendingUp, FolderOpen } from "lucide-react";
+import { AutoFixAllButton } from "@/components/admin/AutoFixAllButton";
 import { AdminMenuList } from "@/components/admin/AdminMenuList";
 import { AdminMenuForm } from "@/components/admin/AdminMenuForm";
 import { AdminAnalytics } from "@/components/admin/AdminAnalytics";
@@ -157,12 +158,15 @@ const Admin = () => {
           <TabsContent value="menu" className="space-y-6">
             {!showForm ? (
               <>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center flex-wrap gap-3">
                   <h2 className="text-xl font-sans font-semibold">Menu Items</h2>
-                  <Button onClick={() => setShowForm(true)}>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Item
-                  </Button>
+                  <div className="flex gap-2">
+                    <AutoFixAllButton />
+                    <Button onClick={() => setShowForm(true)}>
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Item
+                    </Button>
+                  </div>
                 </div>
                 <AdminMenuList onEdit={handleEdit} categories={categories} />
               </>

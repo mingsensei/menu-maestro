@@ -16,6 +16,9 @@ const descriptionKeyMap: Record<Language, keyof MenuItem> = {
   vi: "description_vi",
   ru: "description_ru",
   kz: "description_kz",
+  es: "description_es",
+  fr: "description_fr",
+  it: "description_it",
 };
 
 export const MenuItemCard = ({ item, index }: MenuItemCardProps) => {
