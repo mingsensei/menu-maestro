@@ -197,4 +197,32 @@ All colors MUST be HSL.
   .animate-slide-up {
     animation: slideUp 0.3s ease-out;
   }
+
+  /* Falling Snow Animation */
+  .snowfall {
+    background-image: 
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Ccircle fill='%23fff' cx='50' cy='50' r='3'/%3E%3Ccircle fill='%23fff' cx='150' cy='120' r='2'/%3E%3Ccircle fill='%23fff' cx='300' cy='80' r='4'/%3E%3Ccircle fill='%23fff' cx='450' cy='150' r='2'/%3E%3Ccircle fill='%23fff' cx='600' cy='60' r='3'/%3E%3Ccircle fill='%23fff' cx='750' cy='180' r='2'/%3E%3Ccircle fill='%23fff' cx='900' cy='100' r='4'/%3E%3Ccircle fill='%23fff' cx='100' cy='200' r='2'/%3E%3Ccircle fill='%23fff' cx='250' cy='280' r='3'/%3E%3Ccircle fill='%23fff' cx='400' cy='220' r='2'/%3E%3Ccircle fill='%23fff' cx='550' cy='300' r='4'/%3E%3Ccircle fill='%23fff' cx='700' cy='250' r='2'/%3E%3Ccircle fill='%23fff' cx='850' cy='320' r='3'/%3E%3Ccircle fill='%23fff' cx='950' cy='280' r='2'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Ccircle fill='%23fff' cx='80' cy='30' r='2'/%3E%3Ccircle fill='%23fff' cx='200' cy='100' r='3'/%3E%3Ccircle fill='%23fff' cx='350' cy='60' r='2'/%3E%3Ccircle fill='%23fff' cx='500' cy='130' r='4'/%3E%3Ccircle fill='%23fff' cx='650' cy='80' r='2'/%3E%3Ccircle fill='%23fff' cx='800' cy='160' r='3'/%3E%3Ccircle fill='%23fff' cx='950' cy='90' r='2'/%3E%3C/svg%3E");
+    background-size: 400px 400px, 300px 300px;
+    animation: snowfall 8s linear infinite, snowfall-layer2 12s linear infinite;
+    opacity: 0.8;
+  }
+
+  @keyframes snowfall {
+    0% {
+      background-position: 0 -400px, 0 -300px;
+    }
+    100% {
+      background-position: 200px 400px, -100px 300px;
+    }
+  }
+
+  @keyframes snowfall-layer2 {
+    0% {
+      background-position: 0 -300px, 0 -400px;
+    }
+    100% {
+      background-position: -150px 300px, 100px 400px;
+    }
+  }
 }

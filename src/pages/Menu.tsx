@@ -26,11 +26,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Category, MenuItem } from "@/type/type";
 
-// Christmas decorations
-import christmasTopDecorations from "@/assets/christmas-top-decorations.png";
-import christmasTreesBorder from "@/assets/christmas-trees-border.png";
-import snowOverlay from "@/assets/snow-overlay.png";
-
 const ITEMS_PER_PAGE = 20;
 
 const Menu = () => {
@@ -174,39 +169,15 @@ const Menu = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      <div className="relative w-full h-[160px] md:h-[200px] lg:h-[220px] overflow-hidden">
-        {/* Snow Overlay */}
-        <div 
-          className="absolute inset-0 z-10 pointer-events-none animate-pulse opacity-40"
-          style={{ 
-            backgroundImage: `url(${snowOverlay})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            mixBlendMode: 'screen'
-          }}
-        />
+      <div className="relative w-full h-[120px] md:h-[150px] lg:h-[180px] overflow-hidden">
+        {/* Falling Snow Animation */}
+        <div className="snowfall absolute inset-0 z-10 pointer-events-none" />
         
-        {/* Top Christmas Decorations - Santa Hat & Bell */}
-        <img
-          src={christmasTopDecorations}
-          alt="Christmas decorations"
-          className="absolute top-0 left-0 w-full h-16 md:h-20 object-contain z-20 pointer-events-none"
-          style={{ objectPosition: 'top' }}
-        />
-
         {/* Hero Image */}
         <img
           src="https://res.cloudinary.com/dbp8ozwty/image/upload/v1764899267/z7291253840965_9eefef40c488b1bd2d17bff28170f43f_1_wg9t7t.jpg"
           alt="Restaurant Banner"
           className="w-full h-full object-cover"
-        />
-
-        {/* Bottom Christmas Trees Border */}
-        <img
-          src={christmasTreesBorder}
-          alt="Christmas trees border"
-          className="absolute bottom-0 left-0 w-full h-12 md:h-16 object-cover z-20 pointer-events-none"
-          style={{ objectPosition: 'bottom' }}
         />
       </div>
 
