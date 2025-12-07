@@ -198,31 +198,47 @@ All colors MUST be HSL.
     animation: slideUp 0.3s ease-out;
   }
 
-  /* Falling Snow Animation */
+  /* Falling Snow Animation - Light Blue Snowflakes */
   .snowfall {
     background-image: 
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Ccircle fill='%23fff' cx='50' cy='50' r='3'/%3E%3Ccircle fill='%23fff' cx='150' cy='120' r='2'/%3E%3Ccircle fill='%23fff' cx='300' cy='80' r='4'/%3E%3Ccircle fill='%23fff' cx='450' cy='150' r='2'/%3E%3Ccircle fill='%23fff' cx='600' cy='60' r='3'/%3E%3Ccircle fill='%23fff' cx='750' cy='180' r='2'/%3E%3Ccircle fill='%23fff' cx='900' cy='100' r='4'/%3E%3Ccircle fill='%23fff' cx='100' cy='200' r='2'/%3E%3Ccircle fill='%23fff' cx='250' cy='280' r='3'/%3E%3Ccircle fill='%23fff' cx='400' cy='220' r='2'/%3E%3Ccircle fill='%23fff' cx='550' cy='300' r='4'/%3E%3Ccircle fill='%23fff' cx='700' cy='250' r='2'/%3E%3Ccircle fill='%23fff' cx='850' cy='320' r='3'/%3E%3Ccircle fill='%23fff' cx='950' cy='280' r='2'/%3E%3C/svg%3E"),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Ccircle fill='%23fff' cx='80' cy='30' r='2'/%3E%3Ccircle fill='%23fff' cx='200' cy='100' r='3'/%3E%3Ccircle fill='%23fff' cx='350' cy='60' r='2'/%3E%3Ccircle fill='%23fff' cx='500' cy='130' r='4'/%3E%3Ccircle fill='%23fff' cx='650' cy='80' r='2'/%3E%3Ccircle fill='%23fff' cx='800' cy='160' r='3'/%3E%3Ccircle fill='%23fff' cx='950' cy='90' r='2'/%3E%3C/svg%3E");
-    background-size: 400px 400px, 300px 300px;
-    animation: snowfall 8s linear infinite, snowfall-layer2 12s linear infinite;
-    opacity: 0.8;
+      /* Layer 1 - Larger, slightly blurred snowflakes */
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cdefs%3E%3Cfilter id='blur1' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur in='SourceGraphic' stdDeviation='1'/%3E%3C/filter%3E%3C/defs%3E%3Ccircle fill='%239ec8ff' opacity='0.7' cx='50' cy='50' r='4' filter='url(%23blur1)'/%3E%3Ccircle fill='%23cfe5ff' opacity='0.5' cx='180' cy='120' r='3'/%3E%3Ccircle fill='%239ec8ff' opacity='0.6' cx='320' cy='80' r='5' filter='url(%23blur1)'/%3E%3Ccircle fill='%23cfe5ff' opacity='0.4' cx='480' cy='160' r='3'/%3E%3Ccircle fill='%239ec8ff' opacity='0.7' cx='620' cy='60' r='4'/%3E%3Ccircle fill='%23cfe5ff' opacity='0.5' cx='780' cy='140' r='3' filter='url(%23blur1)'/%3E%3Ccircle fill='%239ec8ff' opacity='0.6' cx='920' cy='100' r='5'/%3E%3Ccircle fill='%23cfe5ff' opacity='0.4' cx='100' cy='220' r='3'/%3E%3Ccircle fill='%239ec8ff' opacity='0.5' cx='260' cy='280' r='4' filter='url(%23blur1)'/%3E%3Ccircle fill='%23cfe5ff' opacity='0.6' cx='420' cy='200' r='3'/%3E%3Ccircle fill='%239ec8ff' opacity='0.7' cx='580' cy='320' r='5'/%3E%3Ccircle fill='%23cfe5ff' opacity='0.5' cx='740' cy='260' r='3' filter='url(%23blur1)'/%3E%3Ccircle fill='%239ec8ff' opacity='0.4' cx='880' cy='340' r='4'/%3E%3C/svg%3E"),
+      /* Layer 2 - Smaller, subtle snowflakes */
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Ccircle fill='%23cfe5ff' opacity='0.4' cx='70' cy='40' r='2'/%3E%3Ccircle fill='%239ec8ff' opacity='0.5' cx='210' cy='110' r='3'/%3E%3Ccircle fill='%23cfe5ff' opacity='0.3' cx='370' cy='70' r='2'/%3E%3Ccircle fill='%239ec8ff' opacity='0.6' cx='530' cy='150' r='3'/%3E%3Ccircle fill='%23cfe5ff' opacity='0.4' cx='680' cy='90' r='2'/%3E%3Ccircle fill='%239ec8ff' opacity='0.5' cx='840' cy='180' r='3'/%3E%3Ccircle fill='%23cfe5ff' opacity='0.3' cx='980' cy='120' r='2'/%3E%3Ccircle fill='%239ec8ff' opacity='0.4' cx='140' cy='250' r='2'/%3E%3Ccircle fill='%23cfe5ff' opacity='0.5' cx='300' cy='320' r='3'/%3E%3Ccircle fill='%239ec8ff' opacity='0.3' cx='460' cy='280' r='2'/%3E%3Ccircle fill='%23cfe5ff' opacity='0.6' cx='620' cy='360' r='3'/%3E%3Ccircle fill='%239ec8ff' opacity='0.4' cx='780' cy='300' r='2'/%3E%3C/svg%3E"),
+      /* Layer 3 - Tiny distant snowflakes */
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Ccircle fill='%23cfe5ff' opacity='0.25' cx='30' cy='60' r='1.5'/%3E%3Ccircle fill='%239ec8ff' opacity='0.3' cx='160' cy='140' r='2'/%3E%3Ccircle fill='%23cfe5ff' opacity='0.2' cx='290' cy='100' r='1.5'/%3E%3Ccircle fill='%239ec8ff' opacity='0.35' cx='420' cy='180' r='2'/%3E%3Ccircle fill='%23cfe5ff' opacity='0.25' cx='550' cy='120' r='1.5'/%3E%3Ccircle fill='%239ec8ff' opacity='0.3' cx='680' cy='200' r='2'/%3E%3Ccircle fill='%23cfe5ff' opacity='0.2' cx='810' cy='160' r='1.5'/%3E%3Ccircle fill='%239ec8ff' opacity='0.35' cx='940' cy='240' r='2'/%3E%3C/svg%3E");
+    background-size: 500px 500px, 400px 400px, 350px 350px;
+    animation: 
+      snowfall-layer1 15s linear infinite,
+      snowfall-layer2 20s linear infinite,
+      snowfall-layer3 25s linear infinite;
+    opacity: 0.9;
   }
 
-  @keyframes snowfall {
+  @keyframes snowfall-layer1 {
     0% {
-      background-position: 0 -400px, 0 -300px;
+      background-position: 0 -500px, 0 0, 0 0;
     }
     100% {
-      background-position: 200px 400px, -100px 300px;
+      background-position: 100px 500px, 0 0, 0 0;
     }
   }
 
   @keyframes snowfall-layer2 {
     0% {
-      background-position: 0 -300px, 0 -400px;
+      background-position: 0 0, 0 -400px, 0 0;
     }
     100% {
-      background-position: -150px 300px, 100px 400px;
+      background-position: 0 0, -80px 400px, 0 0;
+    }
+  }
+
+  @keyframes snowfall-layer3 {
+    0% {
+      background-position: 0 0, 0 0, 0 -350px;
+    }
+    100% {
+      background-position: 0 0, 0 0, 50px 350px;
     }
   }
 }
