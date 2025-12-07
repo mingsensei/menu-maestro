@@ -29,7 +29,7 @@ export const MobileMenuItemCard = ({ item, onClick }: MobileMenuItemCardProps) =
 
   return (
     <Card
-      className="overflow-hidden cursor-pointer active:scale-95 transition-transform duration-200 border border-border/50"
+      className="overflow-hidden cursor-pointer active:scale-95 transition-transform duration-200 border border-border/50 "
       onClick={onClick}
     >
       <div className="relative aspect-square bg-muted">

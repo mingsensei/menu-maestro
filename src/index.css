@@ -5,6 +5,72 @@
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
+html, body {
+  background: transparent !important;
+}
+
+.frost-panel {
+  position: relative;
+  background: rgba(255, 255, 255, 0.25);       /* nền đục nhẹ */
+  backdrop-filter: blur(10px);                 /* hiệu ứng kính mờ lạnh */
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0, 0, 30, 0.15); /* bóng xanh đậm nhẹ */
+}
+.panel-item{
+  position: relative;
+  box-shadow: 0 4px 18px rgba(0, 0, 30, 0.15);
+  border-radius: 12px;
+  color: black;
+}
+/* viền băng xanh */
+.frost-panel > * {
+  position: relative;
+  z-index: 10;
+}
+.snowflake-fall img {
+  filter: brightness(0.7) contrast(4.5);
+}
+
+.frost-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(120, 180, 255, 0.7);  /* viền xanh lạnh */
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+          0 0 15px rgba(140, 200, 255, 0.7),
+          inset 0 0 12px rgba(180, 220, 255, 0.4);   /* ánh sáng băng */
+}
+
+/* hiệu ứng hạt frost nhẹ */
+.frost-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("https://res.cloudinary.com/dbp8ozwty/image/upload/v1765089685/gettyimages-1296478237-1024x1024_t0ejkc.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+@keyframes bell-swing {
+  0%   { transform: rotate(0deg); }
+  15%  { transform: rotate(8deg); }
+  30%  { transform: rotate(-8deg); }
+  45%  { transform: rotate(6deg); }
+  60%  { transform: rotate(-6deg); }
+  75%  { transform: rotate(3deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.bell-swing {
+  animation: bell-swing 1.6s ease-in-out infinite;
+  transform-origin: top center;
+  will-change: transform;
+}
 
 @layer base {
   :root {

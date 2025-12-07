@@ -10,22 +10,29 @@ interface Snowflake {
   opacity: number;
 }
 
-export const Snowfall = () => {
+export const Snowfall = ({ heroHeight = 0 }: { heroHeight?: number }) => {
   const [snowflakes, setSnowflakes] = useState<Snowflake[]>([]);
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    // Generate random snowflakes
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+
+  useEffect(() => {
     const flakes: Snowflake[] = [];
-    const count = 25; // Number of snowflakes
+    const count = 30;
 
     for (let i = 0; i < count; i++) {
       flakes.push({
         id: i,
-        left: Math.random() * 100, // Random horizontal position (%)
-        size: Math.random() * 20 + 10, // Size between 10-30px
-        duration: Math.random() * 10 + 8, // Fall duration 8-18s
-        delay: Math.random() * 10, // Random start delay
-        opacity: Math.random() * 0.5 + 0.3, // Opacity 0.3-0.8
+        left: Math.random() * 100,
+        size: Math.random() * 20 + 10,
+        duration: Math.random() * 15 + 15,  // 15–30s
+        delay: Math.random() * 10,
+        opacity: Math.random() * 0.5 + 0.3,
       });
     }
 
@@ -33,30 +40,29 @@ export const Snowfall = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[5] pointer-events-none overflow-hidden">
-      {snowflakes.map((flake) => (
-        <div
-          key={flake.id}
-          className="absolute snowflake-fall"
+      <div
+          className="fixed left-0 right-0 bottom-0 z-[0] pointer-events-none overflow-hidden"
           style={{
-            left: `${flake.left}%`,
-            width: `${flake.size}px`,
-            height: `${flake.size}px`,
-            opacity: flake.opacity,
-            animationDuration: `${flake.duration}s`,
-            animationDelay: `${flake.delay}s`,
+            top: `${heroHeight}px`,
           }}
-        >
-          <img
-            src={snowflakeImage}
-            alt=""
-            className="w-full h-full object-contain"
-            style={{
-              filter: "drop-shadow(0 0 2px rgba(158, 200, 255, 0.5))",
-            }}
-          />
-        </div>
-      ))}
-    </div>
+      >
+
+      {snowflakes.map((flake) => (
+            <div
+                key={flake.id}
+                className="absolute snowflake-fall"
+                style={{
+                  left: `calc(${flake.left}% + ${(scrollY * 0.05)}px)`,
+                  width: `${flake.size}px`,
+                  height: `${flake.size}px`,
+                  opacity: flake.opacity,
+                  animationDuration: `${flake.duration}s`,
+                  animationDelay: `${flake.delay}s`,
+                }}
+            >
+              <img src={snowflakeImage} className="w-full h-full" />
+            </div>
+        ))}
+      </div>
   );
 };

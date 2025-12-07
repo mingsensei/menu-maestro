@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import {useState, useEffect, useCallback, useRef} from "react";
 import { Search } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
@@ -43,6 +43,23 @@ const Menu = () => {
   const isMobile = useIsMobile();
 
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+
+  const heroRef = useRef<HTMLDivElement>(null);
+  const [heroHeight, setHeroHeight] = useState(0);
+
+  useEffect(() => {
+    if (heroRef.current) {
+      const updateHeight = () => {
+        setHeroHeight(heroRef.current!.offsetHeight);
+      };
+
+      updateHeight(); // chạy lần đầu
+
+      // update nếu window resize
+      window.addEventListener("resize", updateHeight);
+      return () => window.removeEventListener("resize", updateHeight);
+    }
+  }, []);
 
   useEffect(() => {
     fetchCategories();
@@ -170,32 +187,73 @@ const Menu = () => {
   return (
     <div className="min-h-screen bg-background relative">
       {/* Full Page Snowfall Effect */}
-      <Snowfall />
+
       
       <Navigation />
-      <div className="relative w-full h-[120px] md:h-[150px] lg:h-[180px] overflow-hidden">
-        {/* Hero Image */}
-        <img
+      <div
+        ref={heroRef}
+        className="hero-section relative w-full h-[120px] md:h-[155px] lg:h-[180px] overflow-hidden z-0"
+    >
+      {/* Hero background */}
+      <img
           src="https://res.cloudinary.com/dbp8ozwty/image/upload/v1764899267/z7291253840965_9eefef40c488b1bd2d17bff28170f43f_1_wg9t7t.jpg"
           alt="Restaurant Banner"
           className="w-full h-full object-cover"
+      />
+
+      {/* DECOR ITEMS FROM CLOUDINARY */}
+
+      {/* Chuông – góc trên phải */}
+        <img
+            src="https://res.cloudinary.com/dbp8ozwty/image/upload/v1765089200/image-removebg-preview_4_qqfjjh.png"
+            alt="Bell"
+            className="
+    absolute top-0 right-0
+    w-[38px] md:w-[52px] lg:w-[68px]
+    select-none pointer-events-none
+  "
         />
-      </div>
+
+        {/* Mũ Noel – cạnh quả chuông */}
+      <img
+          src="https://res.cloudinary.com/dbp8ozwty/image/upload/v1765088397/pngtree-snowman-winter-christmas-element-seven-png-image_10232808-removebg-preview_1_cfcrjx.png"
+          alt="Snow Man"
+          className="
+        absolute bottom-[-5px] left-12
+      w-[55px] md:w-[70px] lg:w-[85px]
+      select-none pointer-events-none
+    "
+      />
+
+      {/* Cây thông – góc dưới trái */}
+      <img
+          src="https://res.cloudinary.com/dbp8ozwty/image/upload/v1765088065/tree_z0eikt.png"
+          alt="Christmas Tree"
+          className="
+      absolute bottom-0 left-2
+      w-[55px] md:w-[70px] lg:w-[85px]
+      select-none pointer-events-none
+    "
+      />
+    </div>
+
 
       {/* Filters Section */}
       <div className="sticky top-16 z-40 bg-background/95 backdrop-blur-md border-b shadow-sm">
         <div className="container mx-auto max-w-6xl px-4 py-4">
-          {/* Search and Sort Row */}
+
+          {/* Search + Sort Row */}
           <div className="flex gap-3 mb-3">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search menu..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 border-border focus:ring-2 focus:ring-primary/20 transition-all h-10"
+                  placeholder="Search menu..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 border-border focus:ring-2 focus:ring-primary/20 transition-all h-10"
               />
             </div>
+
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-[130px] border-border h-10">
                 <SelectValue placeholder="Sort" />
@@ -211,13 +269,17 @@ const Menu = () => {
           </div>
 
           {/* Category Scroller */}
-          <CategoryScroller
-            categories={categories}
-            selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
-          />
+          <div className="w-full">
+            <CategoryScroller
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onSelectCategory={setSelectedCategory}
+            />
+          </div>
+
         </div>
       </div>
+
 
       {/* Menu Grid */}
       <main className="container mx-auto max-w-6xl px-4 py-6 md:py-12">

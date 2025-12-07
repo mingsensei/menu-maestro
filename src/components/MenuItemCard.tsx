@@ -29,7 +29,7 @@ export const MenuItemCard = ({ item, index }: MenuItemCardProps) => {
 
   return (
     <Card 
-      className="overflow-hidden hover:shadow-elegant transition-all duration-500 hover:-translate-y-2 animate-fade-in group cursor-pointer border border-border/50"
+      className="overflow-hidden hover:shadow-elegant transition-all duration-500 hover:-translate-y-2 animate-fade-in group cursor-pointer border border-border/50 z-10"
       style={{ animationDelay: `${index * 0.05}s` }}
     >
       {/* Image */}
