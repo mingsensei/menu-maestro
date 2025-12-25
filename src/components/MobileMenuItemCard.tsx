@@ -52,7 +52,7 @@ export const MobileMenuItemCard = ({ item, onClick }: MobileMenuItemCardProps) =
             {item.price.toLocaleString('vi-VN')} ₫
           </span>
           {item.vat > 0 && (
-            <span className="text-xs text-muted-foreground">
+            <span className="text-[10px] text-muted-foreground">
               (+{item.vat}% VAT)
             </span>
           )}

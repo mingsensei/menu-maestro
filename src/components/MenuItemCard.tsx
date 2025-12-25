@@ -57,7 +57,7 @@ export const MenuItemCard = ({ item, index }: MenuItemCardProps) => {
               {item.price.toLocaleString('vi-VN')} ₫
             </span>
             {item.vat > 0 && (
-              <span className="text-xs text-muted-foreground block">
+              <span className="text-[10px] text-muted-foreground block">
                 (+{item.vat}% VAT)
               </span>
             )}
