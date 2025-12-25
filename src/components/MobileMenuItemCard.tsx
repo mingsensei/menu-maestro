@@ -47,9 +47,16 @@ export const MobileMenuItemCard = ({ item, onClick }: MobileMenuItemCardProps) =
       </div>
       <CardContent className="p-3">
         <h3 className="font-sans font-semibold text-sm text-foreground truncate">{item.name}</h3>
-        <span className="text-primary font-bold text-sm">
-          {item.price.toLocaleString('vi-VN')} ₫
-        </span>
+        <div className="flex items-center gap-1 flex-wrap">
+          <span className="text-primary font-bold text-sm">
+            {item.price.toLocaleString('vi-VN')} ₫
+          </span>
+          {item.vat > 0 && (
+            <span className="text-xs text-muted-foreground">
+              (+{item.vat}% VAT)
+            </span>
+          )}
+        </div>
         <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
           {description}
         </p>

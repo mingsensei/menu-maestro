@@ -40,6 +40,7 @@ export const AdminMenuForm = ({ editingItem, onClose, categories }: AdminMenuFor
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [vat, setVat] = useState("0");
   const [categoryId, setCategoryId] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -67,6 +68,7 @@ export const AdminMenuForm = ({ editingItem, onClose, categories }: AdminMenuFor
       setName(editingItem.name);
       setDescription(editingItem.description);
       setPrice(editingItem.price.toString());
+      setVat(editingItem.vat?.toString() || "0");
       setCategoryId(editingItem.category_id || "");
       setImagePreview(editingItem.image_url);
       setTranslations({
@@ -211,6 +213,7 @@ export const AdminMenuForm = ({ editingItem, onClose, categories }: AdminMenuFor
         name,
         description,
         price: parseFloat(price),
+        vat: parseFloat(vat) || 0,
         category_id: categoryId || null,
         image_url: imageUrl,
         description_ko: finalTranslations.description_ko || null,
@@ -370,19 +373,34 @@ export const AdminMenuForm = ({ editingItem, onClose, categories }: AdminMenuFor
               </div>
             )}
 
-            {/* Price */}
-            <div className="space-y-2">
-              <Label htmlFor="price">Price (VND) *</Label>
-              <Input
-                id="price"
-                type="number"
-                step="0.01"
-                min="0"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                placeholder="120000"
-                required
-              />
+            {/* Price and VAT */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="price">Price (VND) *</Label>
+                <Input
+                  id="price"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  placeholder="120000"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="vat">VAT (%)</Label>
+                <Input
+                  id="vat"
+                  type="number"
+                  step="1"
+                  min="0"
+                  max="100"
+                  value={vat}
+                  onChange={(e) => setVat(e.target.value)}
+                  placeholder="10"
+                />
+              </div>
             </div>
 
             {/* Category */}
