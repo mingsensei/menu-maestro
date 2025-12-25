@@ -12,6 +12,7 @@ export interface MenuItem {
     description_fr: string | null;
     description_it: string | null;
     price: number;
+    vat: number;
     category_id: string | null;
     image_url: string | null;
 }

@@ -208,7 +208,12 @@ export const AdminMenuList = ({ onEdit, categories }: AdminMenuListProps) => {
                 <CardContent className="p-4">
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="font-sans font-semibold text-lg">{item.name}</h3>
-                    <span className="text-primary font-bold">{item.price.toLocaleString('vi-VN')} ₫</span>
+                    <div className="text-right">
+                      <span className="text-primary font-bold">{item.price.toLocaleString('vi-VN')} ₫</span>
+                      {item.vat > 0 && (
+                        <span className="text-xs text-muted-foreground block">(+{item.vat}% VAT)</span>
+                      )}
+                    </div>
                   </div>
                   <p className="text-sm text-muted-foreground mb-2 line-clamp-2">
                     {item.description}
