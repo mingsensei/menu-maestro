@@ -204,37 +204,37 @@ const Menu = () => {
       {/* DECOR ITEMS FROM CLOUDINARY */}
 
       {/* Chuông – góc trên phải */}
-        <img
-            src="https://res.cloudinary.com/dbp8ozwty/image/upload/v1765089200/image-removebg-preview_4_qqfjjh.png"
-            alt="Bell"
-            className="
-    absolute top-0 right-0
-    w-[38px] md:w-[52px] lg:w-[68px]
-    select-none pointer-events-none
-  "
-        />
+  {/*      <img*/}
+  {/*          src="https://res.cloudinary.com/dbp8ozwty/image/upload/v1765089200/image-removebg-preview_4_qqfjjh.png"*/}
+  {/*          alt="Bell"*/}
+  {/*          className="*/}
+  {/*  absolute top-0 right-0*/}
+  {/*  w-[38px] md:w-[52px] lg:w-[68px]*/}
+  {/*  select-none pointer-events-none*/}
+  {/*"*/}
+  {/*      />*/}
 
         {/* Mũ Noel – cạnh quả chuông */}
-      <img
-          src="https://res.cloudinary.com/dbp8ozwty/image/upload/v1765088397/pngtree-snowman-winter-christmas-element-seven-png-image_10232808-removebg-preview_1_cfcrjx.png"
-          alt="Snow Man"
-          className="
-        absolute bottom-[-5px] left-12
-      w-[55px] md:w-[70px] lg:w-[85px]
-      select-none pointer-events-none
-    "
-      />
+    {/*  <img*/}
+    {/*      src="https://res.cloudinary.com/dbp8ozwty/image/upload/v1765088397/pngtree-snowman-winter-christmas-element-seven-png-image_10232808-removebg-preview_1_cfcrjx.png"*/}
+    {/*      alt="Snow Man"*/}
+    {/*      className="*/}
+    {/*    absolute bottom-[-5px] left-12*/}
+    {/*  w-[55px] md:w-[70px] lg:w-[85px]*/}
+    {/*  select-none pointer-events-none*/}
+    {/*"*/}
+    {/*  />*/}
 
       {/* Cây thông – góc dưới trái */}
-      <img
-          src="https://res.cloudinary.com/dbp8ozwty/image/upload/v1765088065/tree_z0eikt.png"
-          alt="Christmas Tree"
-          className="
-      absolute bottom-0 left-2
-      w-[55px] md:w-[70px] lg:w-[85px]
-      select-none pointer-events-none
-    "
-      />
+    {/*  <img*/}
+    {/*      src="https://res.cloudinary.com/dbp8ozwty/image/upload/v1765088065/tree_z0eikt.png"*/}
+    {/*      alt="Christmas Tree"*/}
+    {/*      className="*/}
+    {/*  absolute bottom-0 left-2*/}
+    {/*  w-[55px] md:w-[70px] lg:w-[85px]*/}
+    {/*  select-none pointer-events-none*/}
+    {/*"*/}
+    {/*  />*/}
     </div>
 
 
