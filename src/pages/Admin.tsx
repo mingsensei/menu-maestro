@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { LogOut, Plus, TrendingUp, FolderOpen } from "lucide-react";
 import { AutoFixAllButton } from "@/components/admin/AutoFixAllButton";
+import { QuickVATUpdate } from "@/components/admin/QuickVATUpdate";
 import { AdminMenuList } from "@/components/admin/AdminMenuList";
 import { AdminMenuForm } from "@/components/admin/AdminMenuForm";
 import { AdminAnalytics } from "@/components/admin/AdminAnalytics";
@@ -160,7 +161,8 @@ const Admin = () => {
               <>
                 <div className="flex justify-between items-center flex-wrap gap-3">
                   <h2 className="text-xl font-sans font-semibold">Menu Items</h2>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
+                    <QuickVATUpdate categories={categories} />
                     <AutoFixAllButton />
                     <Button onClick={() => setShowForm(true)}>
                       <Plus className="w-4 h-4 mr-2" />
