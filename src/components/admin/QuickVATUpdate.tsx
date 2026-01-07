@@ -21,13 +21,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Table,
   TableBody,
   TableCell,
@@ -35,6 +28,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
 import { Percent, Loader2 } from "lucide-react";
 import { MenuItem, Category } from "@/type/type";
 
@@ -42,7 +36,7 @@ interface QuickVATUpdateProps {
   categories: Category[];
 }
 
-const VAT_OPTIONS = ["0", "5", "8", "10", "15", "20"];
+
 
 export const QuickVATUpdate = ({ categories }: QuickVATUpdateProps) => {
   const [open, setOpen] = useState(false);
@@ -158,22 +152,23 @@ export const QuickVATUpdate = ({ categories }: QuickVATUpdateProps) => {
           <div className="flex items-center gap-4 py-4 border-b">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium">Set VAT:</span>
-              <Select value={selectedVAT} onValueChange={setSelectedVAT}>
-                <SelectTrigger className="w-[120px]">
-                  <SelectValue placeholder="Select %" />
-                </SelectTrigger>
-                <SelectContent>
-                  {VAT_OPTIONS.map((vat) => (
-                    <SelectItem key={vat} value={vat}>
-                      {vat}%
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="relative">
+                <Input
+                  type="number"
+                  min="0"
+                  max="100"
+                  step="0.1"
+                  value={selectedVAT}
+                  onChange={(e) => setSelectedVAT(e.target.value)}
+                  placeholder="Enter %"
+                  className="w-[100px] pr-6"
+                />
+                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">%</span>
+              </div>
             </div>
             <Button
               onClick={() => setShowConfirm(true)}
-              disabled={selectedItems.size === 0 || !selectedVAT}
+              disabled={selectedItems.size === 0 || !selectedVAT || isNaN(parseFloat(selectedVAT))}
             >
               Apply VAT
             </Button>
