@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Edit, Trash2, Image as ImageIcon, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Edit, Trash2, Image as ImageIcon, Search } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,28 +29,25 @@ interface AdminMenuListProps {
   categories: Category[];
 }
 
-const ITEMS_PER_PAGE = 20;
-
 export const AdminMenuList = ({ onEdit, categories }: AdminMenuListProps) => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
   const { toast } = useToast();
 
   useEffect(() => {
     fetchMenuItems();
-  }, [currentPage, searchQuery, selectedCategory]);
+  }, [searchQuery, selectedCategory]);
 
   const fetchMenuItems = async () => {
     setLoading(true);
     try {
       let query = supabase
         .from("menu_items")
-        .select("*", { count: "exact" });
+        .select("*")
+        .order("name");
 
       // Filter by category
       if (selectedCategory && selectedCategory !== "all") {
@@ -62,29 +59,7 @@ export const AdminMenuList = ({ onEdit, categories }: AdminMenuListProps) => {
         query = query.or(`name.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
       }
 
-      // Get total count first
-      const { count } = await query;
-      setTotalCount(count || 0);
-
-      // Then fetch paginated data
-      const from = (currentPage - 1) * ITEMS_PER_PAGE;
-      const to = from + ITEMS_PER_PAGE - 1;
-
-      let dataQuery = supabase
-        .from("menu_items")
-        .select("*")
-        .order("name")
-        .range(from, to);
-
-      if (selectedCategory && selectedCategory !== "all") {
-        dataQuery = dataQuery.eq("category_id", selectedCategory);
-      }
-
-      if (searchQuery.trim()) {
-        dataQuery = dataQuery.or(`name.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
-      }
-
-      const { data, error } = await dataQuery;
+      const { data, error } = await query;
 
       if (error) throw error;
       setMenuItems(data || []);
@@ -98,11 +73,6 @@ export const AdminMenuList = ({ onEdit, categories }: AdminMenuListProps) => {
       setLoading(false);
     }
   };
-
-  // Reset to page 1 when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, selectedCategory]);
 
   const handleDelete = async () => {
     if (!deleteId) return;
@@ -138,7 +108,7 @@ export const AdminMenuList = ({ onEdit, categories }: AdminMenuListProps) => {
     return category?.display_name || "Unknown";
   };
 
-  const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+  
 
   if (loading) {
     return (
@@ -180,10 +150,8 @@ export const AdminMenuList = ({ onEdit, categories }: AdminMenuListProps) => {
         <Card>
           <CardContent className="py-12 text-center">
             <ImageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">
-              {totalCount === 0
-                ? "No menu items yet. Add your first item!"
-                : "No items match your search criteria."}
+          <p className="text-muted-foreground">
+              No menu items found. Add your first item!
             </p>
           </CardContent>
         </Card>
@@ -246,30 +214,12 @@ export const AdminMenuList = ({ onEdit, categories }: AdminMenuListProps) => {
             ))}
           </div>
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex items-center justify-center gap-2 mt-6">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <span className="text-sm text-muted-foreground px-4">
-                Page {currentPage} of {totalPages} ({totalCount} items)
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
-          )}
+          {/* Item count */}
+          <div className="text-center mt-6">
+            <span className="text-sm text-muted-foreground">
+              {menuItems.length} item{menuItems.length !== 1 ? 's' : ''} total
+            </span>
+          </div>
         </>
       )}
 
