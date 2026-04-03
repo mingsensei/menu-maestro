@@ -414,7 +414,29 @@ export const AdminMenuForm = ({ editingItem, onClose, categories }: AdminMenuFor
             {/* Translation fields - only show when editing */}
             {editingItem && (
               <div className="space-y-4 border-t pt-4">
-                <h4 className="font-medium text-sm text-muted-foreground">Translations (editable)</h4>
+                <div className="flex items-center justify-between">
+                  <h4 className="font-medium text-sm text-muted-foreground">Translations (editable)</h4>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={translating || !description.trim()}
+                    onClick={async () => {
+                      setTranslating(true);
+                      try {
+                        const result = await translateDescription(description);
+                        setTranslations(result);
+                        toast({ title: "Translations updated", description: "All descriptions re-translated from English." });
+                      } catch (err: any) {
+                        toast({ title: "Translation failed", description: err.message || "Please try again.", variant: "destructive" });
+                      } finally {
+                        setTranslating(false);
+                      }
+                    }}
+                  >
+                    {translating ? <><Loader2 className="w-4 h-4 mr-1 animate-spin" />Translating...</> : "Translation Update"}
+                  </Button>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {Object.entries(LANGUAGE_LABELS).map(([key, label]) => (
                     <div key={key} className="space-y-2">
