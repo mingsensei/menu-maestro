@@ -197,6 +197,15 @@ export const AutoFixAllButton = () => {
 
       setProgress({ current: 0, total: items.length });
 
+      const translationKeys = [
+        "description_ko", "description_ja", "description_cn",
+        "description_vi", "description_ru", "description_kz",
+        "description_es", "description_fr", "description_it",
+      ] as const;
+
+      let translatedCount = 0;
+      const errors: string[] = [];
+
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
         setProgress({ current: i + 1, total: items.length });
@@ -204,8 +213,32 @@ export const AutoFixAllButton = () => {
         const updates: any = {};
         let needsUpdate = false;
 
-        // TRANSLATION (omitted, unchanged)
-        // -----------------------------------------------
+        // TRANSLATION: fill missing description fields
+        const missingTranslations = translationKeys.filter(
+          (key) => !item[key] || (item[key] as string).trim() === ""
+        );
+
+        if (missingTranslations.length > 0 && item.description?.trim()) {
+          try {
+            // Add delay between translation calls to avoid rate limiting
+            if (translatedCount > 0) await delay(1500);
+
+            const autoTranslations = await translateDescription(item.description);
+            missingTranslations.forEach((key) => {
+              const translated = autoTranslations[key as keyof typeof autoTranslations];
+              if (translated) {
+                updates[key] = translated;
+                needsUpdate = true;
+              }
+            });
+            translatedCount++;
+          } catch (translationErr: any) {
+            const errMsg = translationErr?.message || "Unknown error";
+            const itemError = `"${item.name}": ${errMsg}`;
+            errors.push(itemError);
+            console.error(`Translation failed for "${item.name}":`, translationErr);
+          }
+        }
 
         // IMAGE FIX
         if (item.image_url && !item.image_url.toLowerCase().includes(".webp")) {
@@ -224,6 +257,7 @@ export const AutoFixAllButton = () => {
 
           if (updateErr) {
             console.error("Update error:", updateErr);
+            errors.push(`"${item.name}": DB update failed — ${updateErr.message}`);
             errorCount++;
           } else {
             fixedCount++;
@@ -231,10 +265,18 @@ export const AutoFixAllButton = () => {
         }
       }
 
-      toast({
-        title: "Completed",
-        description: `${fixedCount} items fixed — ${errorCount} errors.`,
-      });
+      if (errors.length > 0) {
+        toast({
+          title: `Done with ${errors.length} error(s)`,
+          description: errors.slice(0, 3).join(" | ") + (errors.length > 3 ? ` ...and ${errors.length - 3} more` : ""),
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Completed",
+          description: `${fixedCount} items fixed, ${translatedCount} translated. No errors.`,
+        });
+      }
 
       if (fixedCount > 0) window.location.reload();
     } catch (e: any) {
