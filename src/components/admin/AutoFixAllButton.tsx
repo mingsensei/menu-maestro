@@ -10,7 +10,7 @@ export const AutoFixAllButton = () => {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState({ current: 0, total: 0 });
   const { toast } = useToast();
-  const { translateDescription } = useTranslation();
+  const { translateDescriptionsBatch } = useTranslation();
 
   /**
    * Convert image to WEBP (HEIC/HEIF supported with fallback)
@@ -206,6 +206,34 @@ export const AutoFixAllButton = () => {
       let translatedCount = 0;
       const errors: string[] = [];
 
+      const itemsNeedingTranslation = items.filter(
+        (item) =>
+          item.description?.trim() &&
+          translationKeys.some((key) => !item[key] || (item[key] as string).trim() === "")
+      );
+
+      const translationMap = new Map<string, Awaited<ReturnType<typeof translateDescriptionsBatch>>[number]>();
+
+      if (itemsNeedingTranslation.length > 0) {
+        try {
+          const batchTranslations = await translateDescriptionsBatch(
+            itemsNeedingTranslation.map((item) => item.description)
+          );
+
+          itemsNeedingTranslation.forEach((item, index) => {
+            const translatedItem = batchTranslations[index];
+            if (translatedItem) {
+              translationMap.set(item.id, translatedItem);
+            }
+          });
+
+          translatedCount = translationMap.size;
+        } catch (translationErr: any) {
+          const errMsg = translationErr?.message || "Unknown error";
+          errors.push(`Translation batch failed: ${errMsg}`);
+        }
+      }
+
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
         setProgress({ current: i + 1, total: items.length });
@@ -213,34 +241,18 @@ export const AutoFixAllButton = () => {
         const updates: any = {};
         let needsUpdate = false;
 
-        // TRANSLATION: fill missing description fields
-        const missingTranslations = translationKeys.filter(
-          (key) => !item[key] || (item[key] as string).trim() === ""
-        );
-
-        if (missingTranslations.length > 0 && item.description?.trim()) {
-          try {
-            // Add delay between translation calls to avoid rate limiting
-            if (translatedCount > 0) await delay(1500);
-
-            const autoTranslations = await translateDescription(item.description);
-            missingTranslations.forEach((key) => {
-              const translated = autoTranslations[key as keyof typeof autoTranslations];
-              if (translated) {
-                updates[key] = translated;
-                needsUpdate = true;
-              }
-            });
-            translatedCount++;
-          } catch (translationErr: any) {
-            const errMsg = translationErr?.message || "Unknown error";
-            const itemError = `"${item.name}": ${errMsg}`;
-            errors.push(itemError);
-            console.error(`Translation failed for "${item.name}":`, translationErr);
-          }
+        const autoTranslations = translationMap.get(item.id);
+        if (autoTranslations) {
+          translationKeys.forEach((key) => {
+            const currentValue = item[key] as string | null;
+            const translated = autoTranslations[key];
+            if ((!currentValue || currentValue.trim() === "") && translated) {
+              updates[key] = translated;
+              needsUpdate = true;
+            }
+          });
         }
 
-        // IMAGE FIX
         if (item.image_url && !item.image_url.toLowerCase().includes(".webp")) {
           const newUrl = await convertImageToWebp(item.image_url);
           if (newUrl) {
@@ -251,9 +263,9 @@ export const AutoFixAllButton = () => {
 
         if (needsUpdate) {
           const { error: updateErr } = await supabase
-              .from("menu_items")
-              .update(updates)
-              .eq("id", item.id);
+            .from("menu_items")
+            .update(updates)
+            .eq("id", item.id);
 
           if (updateErr) {
             console.error("Update error:", updateErr);
@@ -268,13 +280,13 @@ export const AutoFixAllButton = () => {
       if (errors.length > 0) {
         toast({
           title: `Done with ${errors.length} error(s)`,
-          description: errors.slice(0, 3).join(" | ") + (errors.length > 3 ? ` ...and ${errors.length - 3} more` : ""),
+          description: errors.slice(0, 2).join(" | ") + (errors.length > 2 ? ` ...and ${errors.length - 2} more` : ""),
           variant: "destructive",
         });
       } else {
         toast({
           title: "Completed",
-          description: `${fixedCount} items fixed, ${translatedCount} translated. No errors.`,
+          description: `${fixedCount} items updated, ${translatedCount} items translated.`,
         });
       }
 
