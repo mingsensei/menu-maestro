@@ -12,17 +12,52 @@ export interface Translations {
   description_it: string;
 }
 
+const MAX_RETRIES = 4;
+const INITIAL_DELAY_MS = 1200;
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const isRateLimitError = (message: string) => {
+  const normalized = message.toLowerCase();
+  return (
+    normalized.includes("429") ||
+    normalized.includes("rate limit") ||
+    normalized.includes("temporarily busy") ||
+    normalized.includes("busy right now") ||
+    normalized.includes("resource_exhausted")
+  );
+};
+
 export const useTranslation = () => {
   const translateDescription = async (description: string): Promise<Translations> => {
-    const response = await supabase.functions.invoke("translate", {
-      body: { description },
-    });
+    let delayMs = INITIAL_DELAY_MS;
 
-    if (response.error) {
-      throw new Error(response.error.message);
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+      const response = await supabase.functions.invoke("translate", {
+        body: { description },
+      });
+
+      if (!response.error) {
+        return response.data as Translations;
+      }
+
+      const errorMessage = response.error.message || "Translation failed";
+      const shouldRetry = isRateLimitError(errorMessage) && attempt < MAX_RETRIES;
+
+      if (shouldRetry) {
+        await wait(delayMs);
+        delayMs *= 2;
+        continue;
+      }
+
+      if (isRateLimitError(errorMessage)) {
+        throw new Error("Translation service is busy right now. Please try again in 1–2 minutes.");
+      }
+
+      throw new Error(errorMessage);
     }
 
-    return response.data as Translations;
+    throw new Error("Translation failed after multiple retries. Please try again shortly.");
   };
 
   return { translateDescription };
