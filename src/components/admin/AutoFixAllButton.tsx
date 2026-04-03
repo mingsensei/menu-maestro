@@ -212,7 +212,7 @@ export const AutoFixAllButton = () => {
           translationKeys.some((key) => !item[key] || (item[key] as string).trim() === "")
       );
 
-      const translationMap = new Map<string, Record<string, string>>();
+      const translationMap = new Map<string, Awaited<ReturnType<typeof translateDescriptionsBatch>>[number]>();
 
       if (itemsNeedingTranslation.length > 0) {
         try {
