@@ -12,10 +12,30 @@ export interface Translations {
   description_it: string;
 }
 
+interface BatchTranslationsResponse {
+  items: Translations[];
+}
+
 const MAX_RETRIES = 4;
 const INITIAL_DELAY_MS = 1200;
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const getErrorMessage = (error: { message?: string } | null) => {
+  if (!error?.message) return "Translation failed";
+
+  const match = error.message.match(/\{.*\}/);
+  if (match) {
+    try {
+      const parsed = JSON.parse(match[0]);
+      if (typeof parsed?.error === "string") return parsed.error;
+    } catch {
+      return error.message;
+    }
+  }
+
+  return error.message;
+};
 
 const isRateLimitError = (message: string) => {
   const normalized = message.toLowerCase();
@@ -29,19 +49,17 @@ const isRateLimitError = (message: string) => {
 };
 
 export const useTranslation = () => {
-  const translateDescription = async (description: string): Promise<Translations> => {
+  const invokeTranslate = async <T,>(body: { description?: string; descriptions?: string[] }): Promise<T> => {
     let delayMs = INITIAL_DELAY_MS;
 
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-      const response = await supabase.functions.invoke("translate", {
-        body: { description },
-      });
+      const response = await supabase.functions.invoke("translate", { body });
 
       if (!response.error) {
-        return response.data as Translations;
+        return response.data as T;
       }
 
-      const errorMessage = response.error.message || "Translation failed";
+      const errorMessage = getErrorMessage(response.error);
       const shouldRetry = isRateLimitError(errorMessage) && attempt < MAX_RETRIES;
 
       if (shouldRetry) {
@@ -60,5 +78,15 @@ export const useTranslation = () => {
     throw new Error("Translation failed after multiple retries. Please try again shortly.");
   };
 
-  return { translateDescription };
+  const translateDescription = async (description: string): Promise<Translations> => {
+    return invokeTranslate<Translations>({ description });
+  };
+
+  const translateDescriptionsBatch = async (descriptions: string[]): Promise<Translations[]> => {
+    if (descriptions.length === 0) return [];
+    const response = await invokeTranslate<BatchTranslationsResponse>({ descriptions });
+    return response.items || [];
+  };
+
+  return { translateDescription, translateDescriptionsBatch };
 };
