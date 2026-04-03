@@ -10,7 +10,7 @@ export const AutoFixAllButton = () => {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState({ current: 0, total: 0 });
   const { toast } = useToast();
-  const { translateDescription } = useTranslation();
+  const { translateDescriptionsBatch } = useTranslation();
 
   /**
    * Convert image to WEBP (HEIC/HEIF supported with fallback)
