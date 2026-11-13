@@ -1,0 +1,17 @@
+{
+  "name": "@menu-maestro/backend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node dev.mjs",
+    "start": "node --env-file-if-exists=.env src/index.js",
+    "test": "node --test test/*.test.js",
+    "lint": "node --check src/index.js && node --check src/app.js && node --check src/catalog-cache.js && node --check src/recommendations.js && node --check src/menu-filters.js && node --check src/menu-retrieval.js && node --check src/menu-query.js && node --check src/menu-subjects.js && node --check src/ai.js && node --check src/knowledge.js && node --check deployment/update-restaurant-contact.mjs && node --check src/auth.js && node --check src/images.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.86.0",
+    "sharp": "0.35.4",
+    "zod": "^3.25.76",
+    "heic-decode": "2.1.0"
+  }
+}

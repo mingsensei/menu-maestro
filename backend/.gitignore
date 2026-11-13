@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+.env
+.env.*
+*.local
+*.log
+.DS_Store
+supabase/.temp/
+supabase/.branches/
+
+*.contact-v1.done

@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Secrets are owned by the backend. Never bundle or commit them.
+.env
+.env.*
+!.env.example
+coverage

@@ -1,0 +1,195 @@
+div.rtr-ai-overlay[data-state] {
+  background: hsl(25 35% 8% / 0.32);
+  backdrop-filter: blur(3px);
+  animation: rtr-ai-backdrop-in 180ms ease-out both;
+}
+div.rtr-ai-overlay[data-state="closed"] {
+  animation: rtr-ai-backdrop-out 160ms ease-in both;
+}
+.rtr-ai-panel[role="dialog"] {
+  position: fixed;
+  inset: auto 0 0;
+  width: 100%;
+  max-width: none;
+  height: var(--rtr-ai-viewport-height, 100dvh);
+  bottom: var(--rtr-ai-viewport-bottom, 0px);
+  margin: 0;
+  transform: none;
+  transform-origin: bottom center;
+  font-family: "Nunito Sans", "Inter", system-ui, sans-serif;
+}
+div.rtr-ai-panel[data-state="open"] {
+  animation: rtr-ai-sheet-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+div.rtr-ai-panel[data-state="closed"] {
+  pointer-events: none;
+  animation: rtr-ai-sheet-out 200ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+@media (min-width: 640px) {
+  .rtr-ai-panel[role="dialog"] {
+    inset: auto 24px 96px auto;
+    width: min(420px, calc(100vw - 48px));
+    height: min(740px, calc(100dvh - 120px));
+    transform-origin: bottom right;
+  }
+  div.rtr-ai-panel[data-state="open"] {
+    animation-name: rtr-ai-pop-in;
+    animation-duration: 240ms;
+  }
+  div.rtr-ai-panel[data-state="closed"] {
+    animation-name: rtr-ai-pop-out;
+    animation-duration: 160ms;
+  }
+}
+/* Paint to the screen edges; keep controls within the iPhone safe area. */
+@media (max-width: 639px), (max-width: 1023px) and (hover: none) and (pointer: coarse) {
+  .rtr-ai-panel[role="dialog"] {
+    inset: auto 0 var(--rtr-ai-viewport-bottom, 0px);
+    width: 100%;
+    height: var(--rtr-ai-viewport-height, 100dvh);
+    border-radius: 0;
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+    background: #713a2e;
+    transform-origin: bottom center;
+  }
+  div.rtr-ai-panel[data-state="open"] {
+    animation-name: rtr-ai-sheet-in;
+  }
+  div.rtr-ai-panel[data-state="closed"] {
+    animation-name: rtr-ai-sheet-out;
+  }
+  .rtr-ai-panel .rtr-ai-header {
+    padding: calc(env(safe-area-inset-top, 0px) + 8px) 12px 8px;
+  }
+  .rtr-ai-panel .rtr-ai-header-row {
+    gap: 8px;
+  }
+  .rtr-ai-panel .rtr-ai-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+  }
+  .rtr-ai-panel .rtr-ai-avatar svg {
+    width: 20px;
+    height: 20px;
+  }
+  .rtr-ai-panel .rtr-ai-header-action {
+    width: 44px;
+    height: 44px;
+  }
+  .rtr-ai-panel .rtr-ai-subtitle {
+    /* Keep the dialog description available to screen readers. */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .rtr-ai-panel .rtr-ai-messages {
+    padding: 16px;
+    background: hsl(var(--background));
+  }
+  .rtr-ai-panel .rtr-ai-welcome {
+    padding-top: 8px;
+  }
+  .rtr-ai-panel .rtr-ai-welcome-icon {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 12px;
+  }
+  .rtr-ai-panel .rtr-ai-welcome-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .rtr-ai-panel .rtr-ai-welcome h3 {
+    font-size: 18px;
+    line-height: 1.4;
+  }
+  .rtr-ai-panel .rtr-ai-welcome p {
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+  .rtr-ai-panel .rtr-ai-welcome > div:last-child {
+    margin-top: 16px;
+  }
+  .rtr-ai-panel .rtr-ai-footer {
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+  .rtr-ai-panel[data-keyboard-open="true"] .rtr-ai-footer {
+    padding-bottom: 8px;
+  }
+  .rtr-ai-panel[data-keyboard-open="true"] .rtr-ai-footer > p:last-child {
+    display: none;
+  }
+}
+.rtr-ai-launcher[data-state="open"] {
+  opacity: 0;
+  pointer-events: none;
+}
+@keyframes rtr-ai-sheet-in {
+  from {
+    opacity: 0.5;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes rtr-ai-sheet-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+@keyframes rtr-ai-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes rtr-ai-pop-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+}
+@keyframes rtr-ai-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes rtr-ai-backdrop-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  div.rtr-ai-panel[data-state],
+  div.rtr-ai-overlay[data-state] {
+    animation: none;
+    transition: none;
+  }
+}
