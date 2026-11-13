@@ -61,8 +61,11 @@ export function ChatWidget() {
     open: "RTR AI",
   };
   const onSelectItem = (item: MenuItem) =>
+    // Open the dish without pre-filling the guest's search box; the item travels
+    // in router state so the detail modal opens even if it is not on the loaded page.
     navigate(
-      `/menu?${new URLSearchParams({ item: item.id, search: item.name, category: item.category_id || "all" })}`,
+      `/menu?${new URLSearchParams({ item: item.id, category: item.category_id || "all" })}`,
+      { state: { item } },
     );
   const [open, setOpen] = useState(false);
   const [showFilters, setShowFilters] = useState(false);

@@ -1,5 +1,5 @@
 import {useState, useEffect, useCallback, useRef} from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { Search } from "lucide-react";
 import { api } from "@/lib/api";
 import { Input } from "@/components/ui/input";
@@ -42,6 +42,7 @@ const Menu = () => {
   const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const requestedItem = searchParams.get("item");
+  const linkedItem = (useLocation().state as { item?: MenuItem } | null)?.item;
   useEffect(() => {
     if (!requestedItem) return;
     setSearchQuery(searchParams.get("search") || "");
@@ -54,10 +55,10 @@ const Menu = () => {
   }, []);
   useEffect(() => {
     if (requestedItem) {
-      const item = menuItems.find(item => item.id === requestedItem);
+      const item = menuItems.find(item => item.id === requestedItem) || (linkedItem?.id === requestedItem ? linkedItem : undefined);
       if (item) setSelectedItem(item);
     }
-  }, [requestedItem, menuItems]);
+  }, [requestedItem, menuItems, linkedItem]);
   const { toast } = useToast();
   const isMobile = useIsMobile();
 
