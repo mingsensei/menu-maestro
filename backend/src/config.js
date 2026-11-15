@@ -13,5 +13,12 @@ export function loadConfig(env = process.env) {
     geminiKey: env.GEMINI_API_KEY || '', geminiModel: env.GEMINI_MODEL || 'gemini-2.5-flash',
     trustProxy: env.TRUST_PROXY === 'true', dailyLimit: Number(env.AI_DAILY_LIMIT || 500),
     knowledgePath: env.KNOWLEDGE_BASE_PATH || undefined,
+    // Reservations: server-only key; never expose it to the frontend.
+    supabaseServiceKey: env.SUPABASE_SERVICE_ROLE_KEY || '',
+    timeZone: env.RESTAURANT_TIMEZONE || 'Asia/Ho_Chi_Minh',
+    mail: {
+      host: env.MAIL_HOST || '', port: Number(env.MAIL_PORT || 587), secure: env.MAIL_SECURE === 'true',
+      user: env.MAIL_USERNAME || '', password: env.MAIL_PASSWORD || '', from: env.MAIL_FROM || '',
+    },
   };
 }

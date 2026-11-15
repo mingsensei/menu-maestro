@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, Plus, TrendingUp, FolderOpen } from "lucide-react";
+import { LogOut, Plus, TrendingUp, FolderOpen, CalendarCheck, Table2, Clock3 } from "lucide-react";
 import { AutoFixAllButton } from "@/components/admin/AutoFixAllButton";
 import { QuickVATUpdate } from "@/components/admin/QuickVATUpdate";
 import { ImageOptimizerButton } from "@/components/admin/ImageOptimizerButton";
@@ -14,6 +14,17 @@ import { AdminCategoryList } from "@/components/admin/AdminCategoryList";
 import { AdminKnowledge } from "@/components/admin/AdminKnowledge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {Category, MenuItem} from "@/type/type.ts";
+import { AdminBookings } from "@/components/admin/AdminBookings";
+import { AuthProvider as TimeMapAuthProvider } from "@/features/time-map/hooks/use-auth";
+
+// Konva and html2canvas are heavy; load them only when their tabs open.
+const AdminTables = lazy(() => import("@/components/admin/AdminTables").then(module => ({ default: module.AdminTables })));
+const TimeMap = lazy(() => import("@/features/time-map/pages/Index"));
+const tabFallback = <div className="p-6 text-sm text-muted-foreground">Loading…</div>;
+import { adminBookingApi } from "@/lib/bookingApi";
+import { useBookingRealtime } from "@/hooks/use-booking-realtime";
+
+const ADMIN_TABS = ["menu", "categories", "analytics", "knowledge", "bookings", "tables", "time-map"];
 
 const Admin = () => {
   const [loading, setLoading] = useState(true);
@@ -23,6 +34,15 @@ const Admin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [categories, setCategories] = useState<Category[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedTab = searchParams.get("tab") || (searchParams.has("bookingId") ? "bookings" : "menu");
+  const tab = ADMIN_TABS.includes(requestedTab) ? requestedTab : "menu";
+  const [pendingCount, setPendingCount] = useState(0);
+  const loadPendingCount = useCallback(() => {
+    void adminBookingApi.pendingBookingCount().then(result => setPendingCount(result.count)).catch(() => undefined);
+  }, []);
+  useEffect(() => { if (isAdmin) loadPendingCount(); }, [isAdmin, loadPendingCount]);
+  useBookingRealtime(loadPendingCount, isAdmin);
 
   useEffect(() => {
     let active = true;
@@ -107,8 +127,8 @@ const Admin = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        <Tabs defaultValue="menu" className="space-y-6">
-          <TabsList className="grid h-auto w-full md:w-[720px] grid-cols-2 sm:grid-cols-4">
+        <Tabs value={tab} onValueChange={value => setSearchParams(value === "menu" ? {} : { tab: value }, { replace: true })} className="space-y-6">
+          <TabsList className="grid h-auto w-full lg:w-[1080px] grid-cols-2 sm:grid-cols-4 lg:grid-cols-7">
             <TabsTrigger value="menu">Menu Items</TabsTrigger>
             <TabsTrigger value="categories">
               <FolderOpen className="w-4 h-4 mr-2" />
@@ -119,6 +139,23 @@ const Admin = () => {
               Analytics
             </TabsTrigger>
             <TabsTrigger value="knowledge">AI Knowledge</TabsTrigger>
+            <TabsTrigger value="bookings" className="relative">
+              <CalendarCheck className="w-4 h-4 mr-2" />
+              Bookings
+              {pendingCount > 0 && (
+                <span className="ml-2 inline-flex min-w-5 items-center justify-center rounded-full bg-red-600 px-1.5 text-[10px] font-bold leading-5 text-white" aria-label={`${pendingCount} pending`}>
+                  {pendingCount > 99 ? "99+" : pendingCount}
+                </span>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="tables">
+              <Table2 className="w-4 h-4 mr-2" />
+              Tables
+            </TabsTrigger>
+            <TabsTrigger value="time-map">
+              <Clock3 className="w-4 h-4 mr-2" />
+              Time Map
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="menu" className="space-y-6">
@@ -155,6 +192,15 @@ const Admin = () => {
             <AdminAnalytics />
           </TabsContent>
           <TabsContent value="knowledge"><AdminKnowledge /></TabsContent>
+          <TabsContent value="bookings"><AdminBookings /></TabsContent>
+          <TabsContent value="tables"><Suspense fallback={tabFallback}><AdminTables /></Suspense></TabsContent>
+          <TabsContent value="time-map">
+            <div className="h-[calc(100dvh-14rem)] min-h-[560px] overflow-hidden rounded-xl border">
+              <TimeMapAuthProvider isAdmin={isAdmin}>
+                <Suspense fallback={tabFallback}><TimeMap embedded /></Suspense>
+              </TimeMapAuthProvider>
+            </div>
+          </TabsContent>
         </Tabs>
       </main>
     </div>

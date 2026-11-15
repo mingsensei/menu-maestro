@@ -1,4 +1,5 @@
 import { createServer } from 'node:http';
+import { createClient } from '@supabase/supabase-js';
 import { createHash, randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { createAuth } from './auth.js';
@@ -10,6 +11,9 @@ import { recommend } from './recommendations.js';
 import { createConversationCache, createMenuRetriever } from './menu-retrieval.js';
 import { uploadImages, optimizeItem } from './images.js';
 import { answerRestaurant, createKnowledgeStore, knowledgeUpdateSchema } from './knowledge.js';
+import { createReservations } from './reservations.js';
+import { createMailer } from './mailer.js';
+import { handleAdminReservations, handlePublicReservations } from './reservation-routes.js';
 
 export async function readBody(req, limit = 65536, raw = false) {
   const buffer = await new Promise((resolve, reject) => {
@@ -53,6 +57,11 @@ export function createApp(config, dependencies = {}) {
   const auth = dependencies.auth || createAuth(config);
   const ai = dependencies.ai || createAI(config, fetch, { onDiagnostic: dependencies.onAIDiagnostic || (entry => console.info(JSON.stringify(entry))) });
   const knowledge = dependencies.knowledge || createKnowledgeStore(config.knowledgePath);
+  // Reservations need the service-role key: guests must not read other guests' bookings through RLS.
+  const reservations = dependencies.reservations || createReservations({
+    db: config.supabaseServiceKey ? createClient(config.supabaseUrl, config.supabaseServiceKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }) : null,
+    mailer: createMailer(config), timeZone: config.timeZone,
+  });
   const conversations = createConversationCache();
   const retriever = createMenuRetriever();
   const limit = createRateLimiter();
@@ -141,6 +150,7 @@ export function createApp(config, dependencies = {}) {
         if (viewed.size > 5000) for (const [key, until] of viewed) if (until < Date.now()) viewed.delete(key);
         return send(res, { ok: true });
       }
+      if (await handlePublicReservations({ req, res, method, path, url, ip, limit, send, readBody, service: reservations })) return;
       if (method === 'POST' && path === '/api/chat') {
         limit(`chat:${ip}`, 10);
         limit(`chat-hour:${ip}`, 40, 3600000);
@@ -185,6 +195,7 @@ export function createApp(config, dependencies = {}) {
       }
       if (!path.startsWith('/api/admin/')) throw new HttpError(404, 'API route not found.');
       const { client, user } = await auth.admin(req, res);
+      if (await handleAdminReservations({ req, res, method, path, url, send, readBody, service: reservations })) return;
       if (method === 'GET' && path === '/api/admin/knowledge') return send(res, await knowledge.read());
       if (method === 'PATCH' && path === '/api/admin/knowledge') {
         const body = knowledgeUpdateSchema.parse(await readBody(req, 160000));
@@ -309,7 +320,7 @@ export function createApp(config, dependencies = {}) {
       const status = error instanceof z.ZodError ? 400 : error.status || 500;
       if (status === 429) res.setHeader('Retry-After', '60');
       if (status >= 500) console.error('API request failed:', req.method, req.url, error.name);
-      if (!res.headersSent) send(res, { error: error instanceof z.ZodError ? error.issues.map(issue => `${issue.path.join('.')}: ${issue.message}`).join('; ') : status === 500 ? 'Something went wrong. Please try again.' : error.message }, status);
+      if (!res.headersSent) send(res, { error: error instanceof z.ZodError ? error.issues.map(issue => `${issue.path.join('.')}: ${issue.message}`).join('; ') : status === 500 ? 'Something went wrong. Please try again.' : error.message, ...(error.code && status < 500 ? { code: error.code } : {}) }, status);
       else res.end();
     }
   });

@@ -35,6 +35,15 @@ Frontend: `http://localhost:8080`. Backend: `http://localhost:3001`. Vite chuy�
 
 Nếu dùng `http://127.0.0.1:8080` thay cho localhost, thêm origin đó vào `FRONTEND_ORIGIN` (nhiều origin ngăn bằng dấu phẩy). Khi đổi cổng backend, cập nhật `API_PROXY_TARGET` trong frontend/.env.
 
+## Đặt bàn (port từ RTR)
+
+- Khách: `/booking` — chọn khu (Terrace/Roma/Verona/Sorrento) và bàn trên sơ đồ, gợi ý bàn tốt nhất, xác thực email bằng OTP 6 số (hết hạn sau 2 phút). Đặt online tối đa 6 khách; quy tắc ghép bàn giữ nguyên như RTR (bàn liền số, không ghép T6–T7, cặp cố định V11–12/V13–14/V15–16, Verona từ 3 khách). Một bàn bị giữ cả ngày khi có booking PENDING/APPROVED; mỗi email một booking mỗi ngày.
+- Admin (`/admin`): tab **Bookings** (lọc, duyệt/từ chối/sửa/huỷ, số booking chờ duyệt cập nhật realtime qua SSE), **Tables** (kéo thả sơ đồ, thêm/sửa/ngừng dùng bàn), **Time Map** (timeline theo ngày, tạo booking walk-in).
+- Cài đặt:
+  1. Áp dụng migration `backend/supabase/migrations/20261115090000_reservations.sql` (tạo bảng, RPC chống đặt trùng, seed 46 bàn).
+  2. Trong `backend/.env`: `SUPABASE_SERVICE_ROLE_KEY` (bắt buộc, chỉ để trên server) và SMTP `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_FROM`. Khi dev không có `MAIL_HOST`, email/OTP được in ra console backend; production thiếu SMTP sẽ từ chối đặt bàn online.
+- Chưa port từ RTR: báo cáo booking, web push, trang time map công khai (lộ tên/SĐT khách), import backup CSV.
+
 ## RTR AI — trợ lý xuyên suốt website
 
 Nút **RTR AI** mở một khung chat dùng chung toàn website. Lịch sử, bộ lọc và yêu cầu đang xử lý được giữ khi chuyển trang bằng liên kết trong ứng dụng. Gợi ý ban đầu thay đổi theo trang: `/home` ưu tiên thông tin nhà hàng; `/menu` ưu tiên món ăn. Khách hỏi được cả hai chủ đề trên mọi trang. Hỗ trợ 10 ngôn ngữ theo lựa chọn của khách. Lịch sử nằm trong bộ nhớ của tab, tối đa 20 câu hỏi mỗi cuộc trò chuyện; tải lại trang hoặc mở tab mới sẽ bắt đầu lại. Không ghi lịch sử vào database.

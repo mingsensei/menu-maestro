@@ -8,6 +8,10 @@ import Menu from "./pages/Menu";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
+import { lazy, Suspense } from "react";
+
+// Konva (table maps) is only needed on the booking page, so load it on demand.
+const Booking = lazy(() => import("./pages/Booking"));
 import NotFound from "./pages/NotFound";
 import { ChatWidget } from "@/components/ChatWidget";
 
@@ -24,6 +28,7 @@ const App = () => (
             <Route path="/" element={<Navigate to="/home" replace />} />
             <Route path="/home" element={<Home />} />
             <Route path="/menu" element={<Menu />} />
+            <Route path="/booking" element={<Suspense fallback={<div className="min-h-screen" />}><Booking /></Suspense>} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

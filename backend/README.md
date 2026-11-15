@@ -12,6 +12,10 @@ Required: `SUPABASE_URL`, `SUPABASE_ANON_KEY`.
 AI: `GROQ_API_KEY` and/or `GEMINI_API_KEY`.
 Optional: `PORT` (3001), `FRONTEND_ORIGIN` (http://localhost:8080),
 `SESSION_SECRET`, `GROQ_MODEL`, `GEMINI_MODEL`, `AI_DAILY_LIMIT`, `KNOWLEDGE_BASE_PATH`.
+Reservations: `SUPABASE_SERVICE_ROLE_KEY` (server only), SMTP `MAIL_HOST`,
+`MAIL_PORT`, `MAIL_SECURE`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_FROM`, and
+optional `RESTAURANT_TIMEZONE` (Asia/Ho_Chi_Minh). Admin booking updates stream
+over SSE from one process, so keep a single backend instance.
 Environment files are excluded from Git.
 
 ## EC2 / Production

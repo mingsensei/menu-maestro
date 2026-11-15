@@ -9,6 +9,14 @@ html, body {
   background: transparent !important;
 }
 
+/* Booking floor maps: let the page scroll vertically through the Konva canvas. */
+.table-map-touch,
+.table-map-touch .konvajs-content,
+.table-map-touch canvas {
+  touch-action: pan-y !important;
+  overscroll-behavior-x: none;
+}
+
 .frost-panel {
   position: relative;
   background: rgba(255, 255, 255, 0.25);       /* nền đục nhẹ */

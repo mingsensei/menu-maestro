@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useBookingCopy } from "@/content/bookingCopy";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -46,6 +47,7 @@ async function getFeatured(signal: AbortSignal) {
 export default function Home() {
   const { language } = useLanguage();
   const t = homeCopy[language];
+  const { t: booking } = useBookingCopy();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSpace, setActiveSpace] = useState(0);
   const [photo, setPhoto] = useState(0);
@@ -182,6 +184,7 @@ export default function Home() {
           <a href="#story">{t.story}</a>
           <a href="#signatures">{t.dishes}</a>
           <a href="#spaces">{t.spaces}</a>
+          <Link to="/booking">{booking("navBooking")}</Link>
         </nav>
         <div className="rtr-header-actions">
           <div className="rtr-language-select">
@@ -214,6 +217,10 @@ export default function Home() {
             </a>
             <Link to="/menu">
               {t.menu}
+              <ArrowUpRight size={22} />
+            </Link>
+            <Link to="/booking">
+              {booking("homeBook")}
               <ArrowUpRight size={22} />
             </Link>
           </nav>
@@ -522,6 +529,7 @@ export default function Home() {
             <a href="#story">{t.story}</a>
             <a href="#spaces">{t.spaces}</a>
             <Link to="/menu">{t.menu}</Link>
+            <Link to="/booking">{booking("navBooking")}</Link>
           </nav>
         </div>
         <div className="rtr-footer-bottom">

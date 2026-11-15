@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { api, type Session } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -7,12 +7,15 @@ import { User, LogOut, LayoutDashboard } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { DarkModeToggle } from "@/components/DarkModeToggle";
+import { useBookingCopy } from "@/content/bookingCopy";
 
 export const Navigation = () => {
   const [user, setUser] = useState<Session["user"]>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { language } = useLanguage();
+  const { t } = useBookingCopy();
+  const linkClass = ({ isActive }: { isActive: boolean }) => `px-2 py-3 ${isActive ? "font-semibold text-primary" : "hover:text-primary"}`;
 
   useEffect(() => {
     const refresh = () => { api.session().then(session => setUser(session.user)).catch(() => setUser(null)); };
@@ -53,7 +56,8 @@ export const Navigation = () => {
 
             <div className="flex gap-0 sm:gap-4 text-xs sm:text-sm ml-auto mr-1 sm:mr-6">
               <Link to="/home" className="px-2 py-3 hover:text-primary">{language === "vi" ? "Trang chủ" : "Home"}</Link>
-              <Link to="/menu" aria-current="page" className="px-2 py-3 font-semibold text-primary">{language === "vi" ? "Thực đơn" : "Menu"}</Link>
+              <NavLink to="/menu" className={linkClass}>{language === "vi" ? "Thực đơn" : "Menu"}</NavLink>
+              <NavLink to="/booking" className={linkClass}>{t("navBooking")}</NavLink>
             </div>
             {/* Auth Section */}
           <div className="flex items-center gap-2">

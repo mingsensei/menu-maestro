@@ -3,9 +3,9 @@ import type { Language } from '@/contexts/LanguageContext';
 
 const base = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
 export class ApiError extends Error {
-  constructor(public status: number, message: string) { super(message); }
+  constructor(public status: number, message: string, public code?: string) { super(message); }
 }
-async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+export async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   let response: Response;
   try {
     response = await fetch(`${base}${path}`, {
@@ -14,11 +14,12 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     });
   } catch { throw new ApiError(0, 'Cannot reach the server. Please check your connection.'); }
   const body = await response.json().catch(() => null);
-  if (!response.ok) throw new ApiError(response.status, body?.error || 'Request failed. Please try again.');
+  if (!response.ok) throw new ApiError(response.status, body?.error || 'Request failed. Please try again.', body?.code);
   if (!body) throw new ApiError(502, 'The server returned an invalid response.');
   return body as T;
 }
-const json = (method: string, body?: unknown): RequestInit => ({ method, ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
+export const apiBase = base;
+export const json = (method: string, body?: unknown): RequestInit => ({ method, ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
 const query = (values: Record<string, string | number>) => new URLSearchParams(Object.entries(values).map(([key, value]) => [key, String(value)])).toString();
 
 export interface Session { user: { id: string; email: string } | null; isAdmin: boolean }
